@@ -13,8 +13,8 @@ version: 1
 # Override with: export REGSYNC_TARGET_REGISTRY=ghcr.io/your-org
 defaults:
   parallel: 4
-  interval: 0  # Run once
-  backup: ""   # No backup
+  interval: 0s  # Run once
+  backup: ""    # No backup
 
 sync:
   # ============================================
@@ -43,7 +43,7 @@ sync:
     target: ${REGSYNC_TARGET_REGISTRY}/node:20-alpine
     type: image
 
-  - source: node:20@sha256:e06aae17c40c7a6b5296ca6f942a02e6737ae61bbbf3e2158624bb0f887991b5
+  - source: node:20
     target: ${REGSYNC_TARGET_REGISTRY}/node:20-pinned
     type: image
 
@@ -53,11 +53,11 @@ sync:
     type: image
 
   # Golang
-  - source: golang:1.24.4-bullseye@sha256:dfd72198d14bc22f270c9e000c304a2ffd19f5a5f693fad82643311afdc6b568
+  - source: golang:1.24.4-bullseye
     target: ${REGSYNC_TARGET_REGISTRY}/golang:1.24.4-bullseye
     type: image
 
-  - source: golang:1.24.4-alpine3.21@sha256:56a23791af0f77c87b049230ead03bd8c3ad41683415ea4595e84ce7eada121a
+  - source: golang:1.24.4-alpine3.21
     target: ${REGSYNC_TARGET_REGISTRY}/golang:1.24.4-alpine3.21
     type: image
 
@@ -70,12 +70,12 @@ sync:
     target: ${REGSYNC_TARGET_REGISTRY}/rust:1.82
     type: image
 
-  - source: rust:latest@sha256:563b33de55d0add224b2e301182660b59bf3cf7219e9dc0fda68f8500e5fe14a
+  - source: rust:latest
     target: ${REGSYNC_TARGET_REGISTRY}/rust:latest-pinned
     type: image
 
   # Alpine Linux
-  - source: alpine:3.21.3@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c
+  - source: alpine:3.21.3
     target: ${REGSYNC_TARGET_REGISTRY}/alpine:3.21.3
     type: image
 
@@ -88,15 +88,11 @@ sync:
     type: image
 
   # Debian
-  - source: debian:stable-slim@sha256:90128f59a7c6f6fdcb6493f587ea352d5c7507f52a6ddfba66fc56cd3d99dc2b
-    target: ${REGSYNC_TARGET_REGISTRY}/debian:stable-slim-1
+  - source: debian:stable-slim
+    target: ${REGSYNC_TARGET_REGISTRY}/debian:stable-slim
     type: image
 
-  - source: debian:stable-slim@sha256:e5365b94db65754594422a8a101c873728711c6a4df029677f4a7f7200d6e1c3
-    target: ${REGSYNC_TARGET_REGISTRY}/debian:stable-slim-2
-    type: image
-
-  - source: debian:bookworm-slim@sha256:ccb33c3ac5b02588fc1d9e4fc09b952e433d0c54d8618d0ee1afadf1f3cf2455
+  - source: debian:bookworm-slim
     target: ${REGSYNC_TARGET_REGISTRY}/debian:bookworm-slim
     type: image
 
@@ -109,7 +105,7 @@ sync:
     target: ${REGSYNC_TARGET_REGISTRY}/amazonlinux:2023
     type: image
 
-  - source: quay.io/centos/centos@sha256:3a3a88a9c8c47dc60b8af3be0779d74c2d3da11a32082ac1a4c329863c422df3
+  - source: quay.io/centos/centos:stream10
     target: ${REGSYNC_TARGET_REGISTRY}/centos:stream-10
     type: image
 
