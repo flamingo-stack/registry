@@ -1,0 +1,145 @@
+
+# Java/JDK Runtime
+eclipse-temurin:21-jdk-alpine
+eclipse-temurin:21-jre-alpine
+
+# Node.js
+node:22-alpine
+node:21-alpine
+node:20-alpine
+node:20@sha256:e06aae17c40c7a6b5296ca6f942a02e6737ae61bbbf3e2158624bb0f887991b5
+
+# Python
+python:3.11.8-slim
+
+# Golang
+golang:1.24.4-bullseye@sha256:dfd72198d14bc22f270c9e000c304a2ffd19f5a5f693fad82643311afdc6b568
+golang:1.24.4-alpine3.21@sha256:56a23791af0f77c87b049230ead03bd8c3ad41683415ea4595e84ce7eada121a
+golang:1.21-alpine
+
+# Rust
+rust:1.82
+rust:latest@sha256:563b33de55d0add224b2e301182660b59bf3cf7219e9dc0fda68f8500e5fe14a
+
+# Alpine Linux
+alpine:3.21.3@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c
+alpine:3.21
+alpine:3.19
+
+# Debian
+debian:stable-slim@sha256:90128f59a7c6f6fdcb6493f587ea352d5c7507f52a6ddfba66fc56cd3d99dc2b
+debian:stable-slim@sha256:e5365b94db65754594422a8a101c873728711c6a4df029677f4a7f7200d6e1c3
+debian:bookworm-slim@sha256:ccb33c3ac5b02588fc1d9e4fc09b952e433d0c54d8618d0ee1afadf1f3cf2455
+debian:12.8
+
+# Distribution Specific
+amazonlinux:2023
+quay.io/centos/centos@sha256:3a3a88a9c8c47dc60b8af3be0779d74c2d3da11a32082ac1a4c329863c422df3
+ubuntu:24.04
+redhat/ubi9:9.5
+fedora:41
+
+# Web Servers
+nginx:1.26.2
+nginx
+nginxinc/nginx-unprivileged:stable-alpine
+
+# Databases (from Dockerfiles)
+postgres:15
+
+# ============================================
+# SECTION 2: DOCKER COMPOSE SERVICE IMAGES
+# ============================================
+
+# Databases
+mysql:8.0.36
+mysql:8.0.19
+postgres:alpine
+
+# Redis
+redis:6
+redis:5
+
+# Mail Services
+mailhog/mailhog:latest
+axllent/mailpit:latest
+rnwood/smtp4dev:v3
+
+# Fleet Services
+fleetdm/fleet:latest
+fleetdm/docker-idp:latest
+
+# Osquery - Multiple Versions
+osquery/osquery:4.7.0-ubuntu20.04
+osquery/osquery:4.9.0-ubuntu20.04
+osquery/osquery:4.9.0-ubuntu18.04
+osquery/osquery:4.9.0-ubuntu16.04
+osquery/osquery:4.9.0-centos8
+osquery/osquery:4.9.0-centos7
+osquery/osquery:4.9.0-centos6
+osquery/osquery:4.9.0-debian10
+osquery/osquery:4.9.0-debian9
+
+# Monitoring & Observability
+gcr.io/cadvisor/cadvisor:latest
+prom/prometheus:latest
+jaegertracing/all-in-one:latest
+otel/opentelemetry-collector-contrib-dev:latest
+
+# Elastic Stack
+docker.elastic.co/elasticsearch/elasticsearch:7.17.25
+docker.elastic.co/kibana/kibana:7.17.25
+docker.elastic.co/apm/apm-server:7.17.25
+
+# Storage & Infrastructure
+quay.io/minio/minio
+localstack/localstack
+
+# ============================================
+# SECTION 3: HELM CHART & MANIFEST IMAGES
+# ============================================
+
+# MongoDB
+mongo:7.0.18
+mongo:8.0.9
+
+# PostgreSQL (from Helm charts)
+postgres:13-alpine
+postgres:14-alpine
+postgres:latest
+
+# MySQL (from Helm charts)
+mysql:8.0.35
+
+# Redis (from Helm charts)
+redis:6.0-alpine
+redis:latest
+
+# Bitnami Legacy Images
+bitnamilegacy/cassandra:5.0.5-debian-12-r7
+bitnamilegacy/cassandra-exporter:2.3.8-debian-12-r51
+bitnamilegacy/kafka:4.0.0-debian-12-r10
+bitnamilegacy/jmx-exporter:1.4.0-debian-12-r0
+bitnamilegacy/redis:8.2.1-debian-12-r0
+bitnamilegacy/redis-exporter:1.76.0-debian-12-r0
+
+# Message Queue & Streaming
+nats:2.10-alpine
+debezium/debezium-ui:2.5
+quay.io/debezium/connect:3.1.1.Final
+
+# Utility Images (Init Containers)
+curlimages/curl:8.5.0
+curlimages/curl:latest
+busybox:1.28
+busybox:1.36
+busybox
+ghcr.io/sap/kubectl-container:v1.31.6
+
+# Application Images
+fleetdm/fleet:v4.60.1
+fleetdm/fleet:v4.69.0
+hashicorp/http-echo:0.2.3
+mongo-express:latest
+ghcr.io/goauthentik/server:latest
+gcr.io/cloudsql-docker/gce-proxy:1.17-alpine
