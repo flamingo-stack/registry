@@ -50,7 +50,7 @@ jobs:
       - name: Prepare regsync config
         run: |
           # Set target registry in environment
-          export REGSYNC_TARGET_REGISTRY="${{ env.REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}"
+          export REGSYNC_TARGET_REGISTRY="${{ env.REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/registry"
 
           # Expand environment variables in config
           envsubst < regsync-config.yaml > regsync-config-expanded.yaml
@@ -80,7 +80,7 @@ jobs:
           echo "## Image Sync Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Target Registry:** ${{ env.REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Target Registry:** ${{ env.REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/registry" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
           # Count total images
