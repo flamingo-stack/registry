@@ -13,8 +13,8 @@ version: 1
 # Override with: export REGSYNC_TARGET_REGISTRY=ghcr.io/your-org
 defaults:
   parallel: 4
-  interval: 0  # Run once
-  backup: ""   # No backup
+  interval: 0s  # Run once
+  backup: ""    # No backup
 
 sync:
   # ============================================
