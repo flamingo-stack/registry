@@ -1,20 +1,9 @@
-# Regsync Configuration
-# This config syncs selected images to a target registry
-# Usage: regsync once -c regsync-config.yaml
-
 version: 1
 
-# Credentials can be set via environment variables:
-# - REGSYNC_SOURCE_USERNAME / REGSYNC_SOURCE_PASSWORD
-# - REGSYNC_TARGET_USERNAME / REGSYNC_TARGET_PASSWORD
-# Or use ~/.docker/config.json
-
-# Target registry configuration
-# Override with: export REGSYNC_TARGET_REGISTRY=ghcr.io/your-org
 defaults:
   parallel: 4
-  interval: 0s  # Run once
-  backup: ""    # No backup
+  interval: 0s
+  backup: ""
 
 sync:
 
@@ -23,18 +12,17 @@ sync:
     type: repository
     tagSets:
       - semverRange:
-        - ">=1.4.1"
+          - ">=1.4.1"
         tagFilter: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
         excludeTags:
           - ".*-.*"
-
 
   - source: docker.io/curlimages/curl
     target: ${REGSYNC_TARGET_REGISTRY}/curl
     type: repository
     tagSets:
       - semverRange:
-        - ">=8.5.0"
+          - ">=8.5.0"
         tagFilter: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
         excludeTags:
           - ".*-.*"
@@ -44,7 +32,7 @@ sync:
     type: repository
     tagSets:
       - semverRange:
-        - ">=1.31.1"
+          - ">=1.31.1"
         tagFilter: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
         excludeTags:
           - ".*-.*"
@@ -54,29 +42,27 @@ sync:
     type: repository
     tagSets:
       - semverRange:
-        - ">=1.30.10"
+          - ">=1.30.10"
         tagFilter: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
         excludeTags:
           - ".*-.*"
-
 
   - source: docker.io/grafana/grafana-image-renderer
     target: ${REGSYNC_TARGET_REGISTRY}/grafana-image-renderer
     type: repository
     tagSets:
       - semverRange:
-        - ">=4.0.17"
+          - ">=4.0.17"
         tagFilter: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
         excludeTags:
           - ".*-.*"
-
 
   - source: ghcr.io/grafana/helm-charts/grafana
     target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/grafana
     type: repository
     tagSets:
       - semverRange:
-        - ">=9.2.10"
+          - ">=9.2.10"
         tagFilter: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
         excludeTags:
           - ".*-.*"
