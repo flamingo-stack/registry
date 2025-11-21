@@ -25,7 +25,7 @@ sync:
       - semverRange:
           - ">=1.4.1"
         allow:
-          - "v\\d+\\.\\d+\\.\\d+"
+          - "^v\\d+\\.\\d+\\.\\d+$"
 
 
   - source: docker.io/curlimages/curl
@@ -35,7 +35,7 @@ sync:
       - semverRange:
           - ">=8.9.1"
         allow:
-          - "\\d+\\.\\d+\\.\\d+"
+          - "^\\d+\\.\\d+\\.\\d+$"
 
   - source: docker.io/library/busybox
     target: ${REGSYNC_TARGET_REGISTRY}/busybox
@@ -44,7 +44,7 @@ sync:
       - semverRange:
           - ">=1.31.1"
         allow:
-          - "\\d+\\.\\d+\\.\\d+"
+          - "^\\d+\\.\\d+\\.\\d+$"
 
   - source: quay.io/kiwigrid/k8s-sidecar
     target: ${REGSYNC_TARGET_REGISTRY}/k8s-sidecar
@@ -53,7 +53,7 @@ sync:
       - semverRange:
           - ">=1.30.10"
         allow:
-          - "\\d+\\.\\d+\\.\\d+"
+          - "^\\d+\\.\\d+\\.\\d+$"
 
 
   - source: docker.io/grafana/grafana-image-renderer
@@ -63,7 +63,7 @@ sync:
       - semverRange:
           - ">=3.0.0"
         allow:
-          - "\\d+\\.\\d+\\.\\d+"
+          - "^\\d+\\.\\d+\\.\\d+$"
 
 
   - source: ghcr.io/grafana/helm-charts/grafana
@@ -71,6 +71,6 @@ sync:
     type: repository
     tagSets:
       - semverRange:
-          - ">=9.2.10"
+          - ">=10.0.0"
         allow:
-          - "\\d+\\.\\d+\\.\\d+"
+          - "^\\d+\\.\\d+\\.\\d+$"
