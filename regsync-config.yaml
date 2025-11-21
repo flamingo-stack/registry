@@ -12,8 +12,8 @@ sync:
     type: repository
     tagSets:
       - semverRange:
-          - ">=1.4.1"
-        tagFilter: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+          - ">=v1.4.1"
+        tagFilter: "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
         excludeTags:
           - ".*-.*"
 
