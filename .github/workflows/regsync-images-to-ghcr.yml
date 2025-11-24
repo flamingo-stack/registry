@@ -47,21 +47,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Prepare regsync config
-        run: |
-          # Set target registry in environment
-          export REGSYNC_TARGET_REGISTRY="${{ env.REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/registry"
-
-          # Expand environment variables in config
-          envsubst < regsync-config.yaml > regsync-config-expanded.yaml
-
-          echo "Regsync configuration prepared:"
-          echo "Target registry: ${REGSYNC_TARGET_REGISTRY}"
-          echo ""
-
-          # Show first few sync targets
-          echo "Sample sync targets:"
-          yq eval '.sync[:5]' regsync-config-expanded.yaml || head -50 regsync-config-expanded.yaml
 
       - name: Sync images
         run: |
@@ -73,26 +58,3 @@ jobs:
 
           echo ""
           echo "Sync completed successfully!"
-
-      - name: Generate sync report
-        if: always()
-        run: |
-          echo "## Image Sync Report" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Target Registry:** ${{ env.REGISTRY }}/${{ env.REGISTRY_NAMESPACE }}/registry" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          # Count total images
-          TOTAL=$(grep -c "^  - source:" regsync-config.yaml || echo "0")
-          echo "**Total Images:** ${TOTAL}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          echo "Images have been synced to the target registry." >> $GITHUB_STEP_SUMMARY
-
-      - name: Report failure
-        if: failure()
-        run: |
-          echo "::error::Image sync failed!"
-          echo "Please check the logs above for details."
-          exit 1
