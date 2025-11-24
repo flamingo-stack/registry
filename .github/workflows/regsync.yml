@@ -54,7 +54,7 @@ jobs:
           echo "==========================================="
 
           # Run regsync once
-          regsync once -c regsync-config-expanded.yaml -v info
+          regsync once -c regsync-config.yaml -v info
 
           echo ""
           echo "Sync completed successfully!"
