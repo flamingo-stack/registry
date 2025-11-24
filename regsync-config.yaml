@@ -344,3 +344,94 @@ sync:
         - ">=2.17.0"
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  # Helm Charts (GHCR)
+  - source: ghcr.io/grafana/helm-charts/grafana
+    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/grafana
+    type: repository
+    tags:
+      semverRange:
+        - ">=10.2.0"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: ghcr.io/grafana/helm-charts/loki
+    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/loki
+    type: repository
+    tags:
+      semverRange:
+        - ">=6.46.0"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: ghcr.io/grafana/helm-charts/promtail
+    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/promtail
+    type: repository
+    tags:
+      semverRange:
+        - ">=6.17.1"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: ghcr.io/external-secrets/charts/external-secrets
+    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/external-secrets
+    type: repository
+    tags:
+      semverRange:
+        - ">=0.11.0"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: ghcr.io/argoproj/argo-helm/argo-cd
+    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/argo-cd
+    type: repository
+    tags:
+      semverRange:
+        - ">=8.2.7"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: ghcr.io/prometheus-community/charts/kube-prometheus-stack
+    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/kube-prometheus-stack
+    type: repository
+    tags:
+      semverRange:
+        - ">=79.7.1"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: ghcr.io/prometheus-community/charts/prometheus-node-exporter
+    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/prometheus-node-exporter
+    type: repository
+    tags:
+      semverRange:
+        - ">=4.49.1"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: ghcr.io/prometheus-community/charts/kube-state-metrics
+    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/kube-state-metrics
+    type: repository
+    tags:
+      semverRange:
+        - ">=6.4.1"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: ghcr.io/prometheus-community/charts/prometheus-mongodb-exporter
+    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/prometheus-mongodb-exporter
+    type: repository
+    tags:
+      semverRange:
+        - ">=3.15.0"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: ghcr.io/prometheus-community/charts/prometheus-redis-exporter
+    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/prometheus-redis-exporter
+    type: repository
+    tags:
+      semverRange:
+        - ">=6.20.1"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
