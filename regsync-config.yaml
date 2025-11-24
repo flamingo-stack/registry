@@ -13,7 +13,7 @@ sync:
     target: ${REGISTRY}/${TARGET_REGISTRY}/alpine
     type: repository
     tags: 
-      - semverRange:
-        - ">3.18.0"
-        allow:
-        - '[0-9]+\.[0-9]+\.[0-9]+'
+      semverRange:
+      - ">3.18.0"
+      allow:
+      - '[0-9]+\.[0-9]+\.[0-9]+'
