@@ -30,6 +30,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
       - name: Install regsync
         run: |
           echo "Installing regsync ${REGSYNC_VERSION}..."
@@ -40,20 +47,6 @@ jobs:
 
           chmod +x /usr/local/bin/regsync
 
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Sync images
         run: |
-          echo "Syncing images to GHCR"
-          echo "==========================================="
-
-          # Run regsync once
           regsync once -c regsync-config.yaml -v info
-
-          echo ""
-          echo "Sync completed successfully!"

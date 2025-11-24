@@ -19,7 +19,7 @@ defaults:
 sync:
 
   - source: docker.io/bats/bats
-    target: ${{ env.REGISTRY }}/${{ env.TARGET_REGISTRY }}/bats
+    target: ${REGISTRY}/${TARGET_REGISTRY}/bats
     type: repository
     tags:
       allow:
@@ -30,7 +30,7 @@ sync:
 
 
   - source: docker.io/curlimages/curl
-    target: ${{ env.REGISTRY }}/${{ env.TARGET_REGISTRY }}/curl
+    target: ${REGISTRY}/${TARGET_REGISTRY}/curl
     type: repository
     tags:
       allow:
@@ -40,7 +40,7 @@ sync:
         - "[1-9][0-9]\\.[0-9]+\\.[0-9]+"  # 10+ major versions
 
   - source: docker.io/library/busybox
-    target: ${{ env.REGISTRY }}/${{ env.TARGET_REGISTRY }}/busybox
+    target: ${REGISTRY}/${TARGET_REGISTRY}/busybox
     type: repository
     tags:
       allow:
@@ -51,7 +51,7 @@ sync:
         - "[2-9]\\.[0-9]+\\.[0-9]+"  # 2.0.0+ major versions
 
   - source: quay.io/kiwigrid/k8s-sidecar
-    target: ${{ env.REGISTRY }}/${{ env.TARGET_REGISTRY }}/k8s-sidecar
+    target: ${REGISTRY}/${TARGET_REGISTRY}/k8s-sidecar
     type: repository
     tags:
       allow:
@@ -63,7 +63,7 @@ sync:
 
 
   - source: docker.io/grafana/grafana
-    target: ${{ env.REGISTRY }}/${{ env.TARGET_REGISTRY }}/grafana
+    target: ${REGISTRY}/${TARGET_REGISTRY}/grafana
     type: repository
     tags:
       allow:
@@ -73,7 +73,7 @@ sync:
         - "[2-9][0-9]\\.[0-9]+\\.[0-9]+"  # 20+ major versions
 
   - source: docker.io/grafana/grafana-image-renderer
-    target: ${{ env.REGISTRY }}/${{ env.TARGET_REGISTRY }}/grafana-image-renderer
+    target: ${REGISTRY}/${TARGET_REGISTRY}/grafana-image-renderer
     type: repository
     tags:
       allow:
@@ -82,7 +82,7 @@ sync:
 
 
   - source: ghcr.io/grafana/helm-charts/grafana
-    target: ${{ env.REGISTRY }}/${{ env.TARGET_REGISTRY }}/helm-charts/grafana
+    target: ${REGISTRY}/${TARGET_REGISTRY}/helm-charts/grafana
     type: repository
     tags:
       allow:
@@ -90,7 +90,7 @@ sync:
         - "[2-9][0-9]\\.[0-9]+\\.[0-9]+"  # 20+ major versions
 
   - source: ghcr.io/grafana/helm-charts/loki
-    target: ${{ env.REGISTRY }}/${{ env.TARGET_REGISTRY }}/helm-charts/loki
+    target: ${REGISTRY}/${TARGET_REGISTRY}/helm-charts/loki
     type: repository
     tags:
       allow:
@@ -101,7 +101,7 @@ sync:
         - "[1-9][0-9]+\\.[0-9]+\\.[0-9]+"  # 10+ major versions
 
   - source: docker.io/grafana/loki
-    target: ${{ env.REGISTRY }}/${{ env.TARGET_REGISTRY }}/loki
+    target: ${REGISTRY}/${TARGET_REGISTRY}/loki
     type: repository
     tags:
       allow:
@@ -112,7 +112,7 @@ sync:
         - "[1-9][0-9]+\\.[0-9]+\\.[0-9]+"  # 10+ major versions
 
   - source: docker.io/grafana/enterprise-logs
-    target: ${{ env.REGISTRY }}/${{ env.TARGET_REGISTRY }}/enterprise-logs
+    target: ${REGISTRY}/${TARGET_REGISTRY}/enterprise-logs
     type: repository
     tags:
       allow:
@@ -123,14 +123,14 @@ sync:
         - "[1-9][0-9]+\\.[0-9]+\\.[0-9]+"  # 10+ major versions
 
   - source: us-docker.pkg.dev/grafanalabs-global/docker-enterprise-provisioner-prod/enterprise-provisioner
-    target: ${{ env.REGISTRY }}/${{ env.TARGET_REGISTRY }}/enterprise-provisioner
+    target: ${REGISTRY}/${TARGET_REGISTRY}/enterprise-provisioner
     type: repository
     tags:
       allow:
         - "latest"                     # latest tag
 
   - source: docker.io/nginxinc/nginx-unprivileged
-    target: ${{ env.REGISTRY }}/${{ env.TARGET_REGISTRY }}/nginx-unprivileged
+    target: ${REGISTRY}/${TARGET_REGISTRY}/nginx-unprivileged
     type: repository
     tags:
       allow:
