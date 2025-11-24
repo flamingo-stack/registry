@@ -15,5 +15,5 @@ sync:
     tagSets: 
       - semverRange:
         - ">=3.18.0"
-        # allow:
-        # - '\d+\.\d+\.\d+'
+        allow:
+        - '\d+\.\d+\.\d+'
