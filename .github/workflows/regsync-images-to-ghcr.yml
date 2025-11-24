@@ -56,4 +56,4 @@ jobs:
           TARGET_REGISTRY: ${{ github.repository }}
         run: |
           envsubst < regsync-config.yaml > regsync-config-tmp.yaml
-          regsync once -c regsync-config-tmp.yaml --dry-run
+          regsync check -c regsync-config-tmp.yaml 
