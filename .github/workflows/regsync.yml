@@ -1,6 +1,12 @@
 name: Sync Images to GHCR
 
+permissions:
+  contents: read
+  packages: write
+
 on:
+  schedule:
+    - cron: '0 2 * * 0'
   workflow_dispatch:
     inputs:
       parallel:
@@ -8,8 +14,6 @@ on:
         required: false
         default: '4'
         type: string
-  schedule:
-    - cron: '0 2 * * 0'
 
 env:
   REGISTRY: ghcr.io
@@ -19,10 +23,9 @@ env:
 jobs:
   sync-images:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
+    if: |
+      github.event_name == 'workflow_dispatch' || 
+      github.event_name == 'schedule'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -36,9 +39,6 @@ jobs:
             -o /usr/local/bin/regsync
 
           chmod +x /usr/local/bin/regsync
-
-          # Verify installation
-          regsync version
 
       - name: Log in to GHCR
         uses: docker/login-action@v3
