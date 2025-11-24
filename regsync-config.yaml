@@ -10,7 +10,7 @@ defaults:
 sync:
   
   - source: docker.io/apachepinot/pinot
-    target: ${REGSYNC_TARGET_REGISTRY}/apachepinot/pinot
+    target: ${TARGET_REGISTRY}/apachepinot/pinot
     type: repository
     tags:
       semverRange:
@@ -19,7 +19,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/curlimages/curl
-    target: ${REGSYNC_TARGET_REGISTRY}/curlimages/curl
+    target: ${TARGET_REGISTRY}/curlimages/curl
     type: repository
     tags:
       semverRange:
@@ -28,7 +28,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/bitnamilegacy/cassandra
-    target: ${REGSYNC_TARGET_REGISTRY}/bitnamilegacy/cassandra
+    target: ${TARGET_REGISTRY}/bitnamilegacy/cassandra
     type: repository
     tags:
       semverRange:
@@ -37,7 +37,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
 
   - source: docker.io/bitnamilegacy/kafka
-    target: ${REGSYNC_TARGET_REGISTRY}/bitnamilegacy/kafka
+    target: ${TARGET_REGISTRY}/bitnamilegacy/kafka
     type: repository
     tags:
       semverRange:
@@ -46,7 +46,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
 
   - source: docker.io/bitnamilegacy/zookeeper
-    target: ${REGSYNC_TARGET_REGISTRY}/bitnamilegacy/zookeeper
+    target: ${TARGET_REGISTRY}/bitnamilegacy/zookeeper
     type: repository
     tags:
       semverRange:
@@ -55,7 +55,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
 
   - source: docker.io/grafana/grafana
-    target: ${REGSYNC_TARGET_REGISTRY}/grafana/grafana
+    target: ${TARGET_REGISTRY}/grafana/grafana
     type: repository
     tags:
       semverRange:
@@ -64,7 +64,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/grafana/loki
-    target: ${REGSYNC_TARGET_REGISTRY}/grafana/loki
+    target: ${TARGET_REGISTRY}/grafana/loki
     type: repository
     tags:
       semverRange:
@@ -73,7 +73,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/grafana/promtail
-    target: ${REGSYNC_TARGET_REGISTRY}/grafana/promtail
+    target: ${TARGET_REGISTRY}/grafana/promtail
     type: repository
     tags:
       semverRange:
@@ -82,7 +82,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: quay.io/kiwigrid/k8s-sidecar
-    target: ${REGSYNC_TARGET_REGISTRY}/kiwigrid/k8s-sidecar
+    target: ${TARGET_REGISTRY}/kiwigrid/k8s-sidecar
     type: repository
     tags:
       semverRange:
@@ -91,7 +91,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/library/busybox
-    target: ${REGSYNC_TARGET_REGISTRY}/library/busybox
+    target: ${TARGET_REGISTRY}/library/busybox
     type: repository
     tags:
       semverRange:
@@ -100,7 +100,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/library/memcached
-    target: ${REGSYNC_TARGET_REGISTRY}/library/memcached
+    target: ${TARGET_REGISTRY}/library/memcached
     type: repository
     tags:
       semverRange:
@@ -109,7 +109,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
 
   - source: docker.io/library/mongo-express
-    target: ${REGSYNC_TARGET_REGISTRY}/library/mongo-express
+    target: ${TARGET_REGISTRY}/library/mongo-express
     type: repository
     tags:
       semverRange:
@@ -118,7 +118,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/library/mongo
-    target: ${REGSYNC_TARGET_REGISTRY}/library/mongo
+    target: ${TARGET_REGISTRY}/library/mongo
     type: repository
     tags:
       semverRange:
@@ -127,7 +127,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/library/mysql
-    target: ${REGSYNC_TARGET_REGISTRY}/library/mysql
+    target: ${TARGET_REGISTRY}/library/mysql
     type: repository
     tags:
       semverRange:
@@ -136,7 +136,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/library/nats
-    target: ${REGSYNC_TARGET_REGISTRY}/library/nats
+    target: ${TARGET_REGISTRY}/library/nats
     type: repository
     tags:
       semverRange:
@@ -146,7 +146,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
 
   - source: docker.io/library/postgres
-    target: ${REGSYNC_TARGET_REGISTRY}/library/postgres
+    target: ${TARGET_REGISTRY}/library/postgres
     type: repository
     tags:
       semverRange:
@@ -156,7 +156,7 @@ sync:
         - '[0-9]+\.[0-9]+-alpine'
 
   - source: docker.io/library/redis
-    target: ${REGSYNC_TARGET_REGISTRY}/library/redis
+    target: ${TARGET_REGISTRY}/library/redis
     type: repository
     tags:
       semverRange:
@@ -166,7 +166,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
 
   - source: docker.io/oliver006/redis_exporter
-    target: ${REGSYNC_TARGET_REGISTRY}/oliver006/redis_exporter
+    target: ${TARGET_REGISTRY}/oliver006/redis_exporter
     type: repository
     tags:
       semverRange:
@@ -175,7 +175,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/percona/mongodb_exporter
-    target: ${REGSYNC_TARGET_REGISTRY}/percona/mongodb_exporter
+    target: ${TARGET_REGISTRY}/percona/mongodb_exporter
     type: repository
     tags:
       semverRange:
@@ -184,7 +184,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/prom/memcached-exporter
-    target: ${REGSYNC_TARGET_REGISTRY}/prom/memcached-exporter
+    target: ${TARGET_REGISTRY}/prom/memcached-exporter
     type: repository
     tags:
       semverRange:
@@ -193,7 +193,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: public.ecr.aws/docker/library/redis
-    target: ${REGSYNC_TARGET_REGISTRY}/library/redis
+    target: ${TARGET_REGISTRY}/library/redis
     type: repository
     tags:
       semverRange:
@@ -202,7 +202,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
 
   - source: ghcr.io/dexidp/dex
-    target: ${REGSYNC_TARGET_REGISTRY}/dexidp/dex
+    target: ${TARGET_REGISTRY}/dexidp/dex
     type: repository
     tags:
       semverRange:
@@ -211,7 +211,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/external-secrets/external-secrets
-    target: ${REGSYNC_TARGET_REGISTRY}/external-secrets/external-secrets
+    target: ${TARGET_REGISTRY}/external-secrets/external-secrets
     type: repository
     tags:
       semverRange:
@@ -220,7 +220,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/kafbat/kafka-ui
-    target: ${REGSYNC_TARGET_REGISTRY}/kafbat/kafka-ui
+    target: ${TARGET_REGISTRY}/kafbat/kafka-ui
     type: repository
     tags:
       semverRange:
@@ -229,7 +229,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/telepresenceio/tel2
-    target: ${REGSYNC_TARGET_REGISTRY}/telepresenceio/tel2
+    target: ${TARGET_REGISTRY}/telepresenceio/tel2
     type: repository
     tags:
       semverRange:
@@ -238,7 +238,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: registry.k8s.io/metadata-proxy/metadata-proxy
-    target: ${REGSYNC_TARGET_REGISTRY}/metadata-proxy
+    target: ${TARGET_REGISTRY}/metadata-proxy
     type: repository
     tags:
       semverRange:
@@ -247,7 +247,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: oci.external-secrets.io/external-secrets/external-secrets
-    target: ${REGSYNC_TARGET_REGISTRY}/oci-external-secrets/external-secrets
+    target: ${TARGET_REGISTRY}/oci-external-secrets/external-secrets
     type: repository
     tags:
       semverRange:
@@ -256,7 +256,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: quay.io/argoproj/argocd
-    target: ${REGSYNC_TARGET_REGISTRY}/argoproj/argocd
+    target: ${TARGET_REGISTRY}/argoproj/argocd
     type: repository
     tags:
       semverRange:
@@ -265,7 +265,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: quay.io/debezium/connect
-    target: ${REGSYNC_TARGET_REGISTRY}/debezium/connect
+    target: ${TARGET_REGISTRY}/debezium/connect
     type: repository
     tags:
       semverRange:
@@ -274,7 +274,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+\.Final'
 
   - source: quay.io/prometheus-operator/prometheus-config-reloader
-    target: ${REGSYNC_TARGET_REGISTRY}/prometheus-operator/prometheus-config-reloader
+    target: ${TARGET_REGISTRY}/prometheus-operator/prometheus-config-reloader
     type: repository
     tags:
       semverRange:
@@ -283,7 +283,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: quay.io/prometheus-operator/prometheus-operator
-    target: ${REGSYNC_TARGET_REGISTRY}/prometheus-operator/prometheus-operator
+    target: ${TARGET_REGISTRY}/prometheus-operator/prometheus-operator
     type: repository
     tags:
       semverRange:
@@ -292,7 +292,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: quay.io/prometheus/node-exporter
-    target: ${REGSYNC_TARGET_REGISTRY}/prometheus/node-exporter
+    target: ${TARGET_REGISTRY}/prometheus/node-exporter
     type: repository
     tags:
       semverRange:
@@ -301,7 +301,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: quay.io/prometheus/prometheus
-    target: ${REGSYNC_TARGET_REGISTRY}/prometheus/prometheus
+    target: ${TARGET_REGISTRY}/prometheus/prometheus
     type: repository
     tags:
       semverRange:
@@ -310,7 +310,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/bitnamilegacy/redis-exporter
-    target: ${REGSYNC_TARGET_REGISTRY}/bitnamilegacy/redis-exporter
+    target: ${TARGET_REGISTRY}/bitnamilegacy/redis-exporter
     type: repository
     tags:
       semverRange:
@@ -319,7 +319,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
 
   - source: docker.io/bitnamilegacy/redis
-    target: ${REGSYNC_TARGET_REGISTRY}/bitnamilegacy/redis
+    target: ${TARGET_REGISTRY}/bitnamilegacy/redis
     type: repository
     tags:
       semverRange:
@@ -328,7 +328,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
 
   - source: registry.k8s.io/external-dns/external-dns
-    target: ${REGSYNC_TARGET_REGISTRY}/external-dns/external-dns
+    target: ${TARGET_REGISTRY}/external-dns/external-dns
     type: repository
     tags:
       semverRange:
@@ -337,7 +337,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: registry.k8s.io/kube-state-metrics/kube-state-metrics
-    target: ${REGSYNC_TARGET_REGISTRY}/kube-state-metrics/kube-state-metrics
+    target: ${TARGET_REGISTRY}/kube-state-metrics/kube-state-metrics
     type: repository
     tags:
       semverRange:
@@ -347,7 +347,7 @@ sync:
 
   # Helm Charts (GHCR)
   - source: ghcr.io/grafana/helm-charts/grafana
-    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/grafana
+    target: ${TARGET_REGISTRY}/helm-charts/grafana
     type: repository
     tags:
       semverRange:
@@ -356,7 +356,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/grafana/helm-charts/loki
-    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/loki
+    target: ${TARGET_REGISTRY}/helm-charts/loki
     type: repository
     tags:
       semverRange:
@@ -365,7 +365,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/grafana/helm-charts/promtail
-    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/promtail
+    target: ${TARGET_REGISTRY}/helm-charts/promtail
     type: repository
     tags:
       semverRange:
@@ -374,7 +374,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/external-secrets/charts/external-secrets
-    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/external-secrets
+    target: ${TARGET_REGISTRY}/helm-charts/external-secrets
     type: repository
     tags:
       semverRange:
@@ -383,7 +383,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/argoproj/argo-helm/argo-cd
-    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/argo-cd
+    target: ${TARGET_REGISTRY}/helm-charts/argo-cd
     type: repository
     tags:
       semverRange:
@@ -392,7 +392,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/prometheus-community/charts/kube-prometheus-stack
-    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/kube-prometheus-stack
+    target: ${TARGET_REGISTRY}/helm-charts/kube-prometheus-stack
     type: repository
     tags:
       semverRange:
@@ -401,7 +401,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/prometheus-community/charts/prometheus-node-exporter
-    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/prometheus-node-exporter
+    target: ${TARGET_REGISTRY}/helm-charts/prometheus-node-exporter
     type: repository
     tags:
       semverRange:
@@ -410,7 +410,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/prometheus-community/charts/kube-state-metrics
-    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/kube-state-metrics
+    target: ${TARGET_REGISTRY}/helm-charts/kube-state-metrics
     type: repository
     tags:
       semverRange:
@@ -419,7 +419,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/prometheus-community/charts/prometheus-mongodb-exporter
-    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/prometheus-mongodb-exporter
+    target: ${TARGET_REGISTRY}/helm-charts/prometheus-mongodb-exporter
     type: repository
     tags:
       semverRange:
@@ -428,7 +428,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/prometheus-community/charts/prometheus-redis-exporter
-    target: ${REGSYNC_TARGET_REGISTRY}/helm-charts/prometheus-redis-exporter
+    target: ${TARGET_REGISTRY}/helm-charts/prometheus-redis-exporter
     type: repository
     tags:
       semverRange:
