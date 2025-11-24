@@ -16,7 +16,8 @@ on:
         type: string
 
 env:
-  TARGET_REGISTRY: "ghcr.io/${{ github.repository }}"
+  REGISTRY: ghcr.io
+  TARGET_REGISTRY: ${{ github.repository }}
   REGSYNC_VERSION: v0.7.1
 
 jobs:
@@ -45,7 +46,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
 
       - name: Sync images
         run: |
