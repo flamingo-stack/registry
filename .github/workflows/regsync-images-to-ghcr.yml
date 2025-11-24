@@ -16,8 +16,7 @@ on:
         type: string
 
 env:
-  REGISTRY: ghcr.io
-  REGISTRY_NAMESPACE: ${{ github.repository_owner }}
+  TARGET_REGISTRY: "ghcr.io/${{ github.repository }}"
   REGSYNC_VERSION: v0.7.1
 
 jobs:
