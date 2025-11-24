@@ -19,6 +19,7 @@ env:
 jobs:
   sync-images:
     runs-on: ubuntu-latest
+    timeout-minutes: 180
     if: |
       github.event_name == 'workflow_dispatch' || 
       github.event_name == 'schedule'
