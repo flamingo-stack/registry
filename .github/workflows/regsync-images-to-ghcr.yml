@@ -15,10 +15,9 @@ on:
         default: '4'
         type: string
 
-env:
-  REGISTRY: ghcr.io
-  TARGET_REGISTRY: ${{ github.repository }}
-  REGSYNC_VERSION: v0.7.1
+# =============================================================================
+# JOBS
+# =============================================================================
 
 jobs:
   sync-images:
@@ -38,6 +37,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Install regsync
+        env:
+          REGSYNC_VERSION: v0.7.1
         run: |
           echo "Installing regsync ${REGSYNC_VERSION}..."
 
@@ -48,5 +49,9 @@ jobs:
           chmod +x /usr/local/bin/regsync
 
       - name: Sync images
+        env:
+          REGISTRY: ghcr.io
+          TARGET_REGISTRY: ${{ github.repository }}
         run: |
-          regsync once -c regsync-config.yaml -v info
+          envsubst < regsync-config.yaml > regsync-config-tmp.yaml
+          regsync once -c regsync-config-tmp.yaml -v info
