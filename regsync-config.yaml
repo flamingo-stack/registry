@@ -9,124 +9,338 @@ defaults:
 
 sync:
   
-  - source: docker.io/bats/bats
-    target: ${REGISTRY}/${TARGET_REGISTRY}/bats
+  - source: docker.io/apachepinot/pinot
+    target: ${REGSYNC_TARGET_REGISTRY}/apachepinot/pinot
     type: repository
     tags:
+      semverRange:
+        - ">0.1.0"
       allow:
-        - "v1\\.4\\.[1-9]"        # v1.4.1-v1.4.9
-        - "v1\\.4\\.[1-9][0-9]+"  # v1.4.10 and higher patch versions
-        - "v1\\.[5-9]\\.[0-9]+"   # v1.5.0 and higher minor versions
-        - "v[2-9]\\.[0-9]+\\.[0-9]+"  # v2.0.0 and higher major versions
-
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/curlimages/curl
-    target: ${REGISTRY}/${TARGET_REGISTRY}/curl
+    target: ${REGSYNC_TARGET_REGISTRY}/curlimages/curl
     type: repository
     tags:
+      semverRange:
+        - ">8.5.0"
       allow:
-        - "8\\.[5-9]\\.[1-9][0-9]*"  # 8.5.x - 8.9.x (excluding .0 patch versions)
-        - "8\\.[1-9][0-9]+\\.[0-9]+"  # 8.10+ minor versions
-        - "9\\.[0-9]+\\.[0-9]+"    # 9.x.x versions
-        - "[1-9][0-9]\\.[0-9]+\\.[0-9]+"  # 10+ major versions
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
-  - source: docker.io/library/busybox
-    target: ${REGISTRY}/${TARGET_REGISTRY}/busybox
+  - source: docker.io/bitnamilegacy/cassandra
+    target: ${REGSYNC_TARGET_REGISTRY}/bitnamilegacy/cassandra
     type: repository
     tags:
+      semverRange:
+        - ">5.0.0"
       allow:
-        - "1\\.31\\.[1-9]"        # 1.31.1-1.31.9
-        - "1\\.31\\.[1-9][0-9]+"  # 1.31.10 and higher patch versions
-        - "1\\.3[2-9]\\.[0-9]+"   # 1.32+ minor versions
-        - "1\\.[4-9][0-9]\\.[0-9]+"  # 1.40+ minor versions
-        - "[2-9]\\.[0-9]+\\.[0-9]+"  # 2.0.0+ major versions
+        - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
 
-  - source: quay.io/kiwigrid/k8s-sidecar
-    target: ${REGISTRY}/${TARGET_REGISTRY}/k8s-sidecar
+  - source: docker.io/bitnamilegacy/kafka
+    target: ${REGSYNC_TARGET_REGISTRY}/bitnamilegacy/kafka
     type: repository
     tags:
+      semverRange:
+        - ">4.0.0"
       allow:
-        - "1\\.30\\.1[0-9]"       # 1.30.10-19
-        - "1\\.30\\.[2-9][0-9]+"  # 1.30.20+
-        - "1\\.3[1-9]\\.[0-9]+"   # 1.31+ minor versions
-        - "1\\.[4-9][0-9]\\.[0-9]+"  # 1.40+ minor versions
-        - "[2-9]\\.[0-9]+\\.[0-9]+"  # 2.0.0+ major versions
+        - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
 
+  - source: docker.io/bitnamilegacy/zookeeper
+    target: ${REGSYNC_TARGET_REGISTRY}/bitnamilegacy/zookeeper
+    type: repository
+    tags:
+      semverRange:
+        - ">3.9.0"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
 
   - source: docker.io/grafana/grafana
-    target: ${REGISTRY}/${TARGET_REGISTRY}/grafana
+    target: ${REGSYNC_TARGET_REGISTRY}/grafana/grafana
     type: repository
     tags:
+      semverRange:
+        - ">12.2.0"
       allow:
-        - "11\\.[1-9]\\.[0-9]+"       # 11.1.0+ minor versions
-        - "11\\.[1-9][0-9]+\\.[0-9]+" # 11.10+ minor versions
-        - "1[2-9]\\.[0-9]+\\.[0-9]+"  # 12+ major versions
-        - "[2-9][0-9]\\.[0-9]+\\.[0-9]+"  # 20+ major versions
-
-  - source: docker.io/grafana/grafana-image-renderer
-    target: ${REGISTRY}/${TARGET_REGISTRY}/grafana-image-renderer
-    type: repository
-    tags:
-      allow:
-        - "[3-9]\\.[0-9]+\\.[0-9]+"   # 3.0.0+ versions
-        - "[1-9][0-9]+\\.[0-9]+\\.[0-9]+"  # 10+ major versions
-
-
-  - source: ghcr.io/grafana/helm-charts/grafana
-    target: ${REGISTRY}/${TARGET_REGISTRY}/helm-charts/grafana
-    type: repository
-    tags:
-      allow:
-        - "1[0-9]\\.[0-9]+\\.[0-9]+"  # 10.x.x - 19.x.x versions
-        - "[2-9][0-9]\\.[0-9]+\\.[0-9]+"  # 20+ major versions
-
-  - source: ghcr.io/grafana/helm-charts/loki
-    target: ${REGISTRY}/${TARGET_REGISTRY}/helm-charts/loki
-    type: repository
-    tags:
-      allow:
-        - "6\\.43\\.[0-9]+"            # 6.43.0+ patch versions
-        - "6\\.[4-9][4-9]\\.[0-9]+"    # 6.44+ minor versions
-        - "6\\.[5-9][0-9]+\\.[0-9]+"   # 6.50+ minor versions
-        - "[7-9]\\.[0-9]+\\.[0-9]+"    # 7.0.0+ major versions
-        - "[1-9][0-9]+\\.[0-9]+\\.[0-9]+"  # 10+ major versions
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/grafana/loki
-    target: ${REGISTRY}/${TARGET_REGISTRY}/loki
+    target: ${REGSYNC_TARGET_REGISTRY}/grafana/loki
     type: repository
     tags:
+      semverRange:
+        - ">3.5.7"
       allow:
-        - "3\\.5\\.[7-9]"              # 3.5.7-3.5.9
-        - "3\\.5\\.[1-9][0-9]+"        # 3.5.10+ patch versions
-        - "3\\.[6-9]\\.[0-9]+"         # 3.6+ minor versions
-        - "[4-9]\\.[0-9]+\\.[0-9]+"    # 4.0.0+ major versions
-        - "[1-9][0-9]+\\.[0-9]+\\.[0-9]+"  # 10+ major versions
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
-  - source: docker.io/grafana/enterprise-logs
-    target: ${REGISTRY}/${TARGET_REGISTRY}/enterprise-logs
+  - source: docker.io/grafana/promtail
+    target: ${REGSYNC_TARGET_REGISTRY}/grafana/promtail
     type: repository
     tags:
+      semverRange:
+        - ">3.5.1"
       allow:
-        - "3\\.5\\.[4-9]"              # 3.5.4-3.5.9
-        - "3\\.5\\.[1-9][0-9]+"        # 3.5.10+ patch versions
-        - "3\\.[6-9]\\.[0-9]+"         # 3.6+ minor versions
-        - "[4-9]\\.[0-9]+\\.[0-9]+"    # 4.0.0+ major versions
-        - "[1-9][0-9]+\\.[0-9]+\\.[0-9]+"  # 10+ major versions
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
-  - source: us-docker.pkg.dev/grafanalabs-global/docker-enterprise-provisioner-prod/enterprise-provisioner
-    target: ${REGISTRY}/${TARGET_REGISTRY}/enterprise-provisioner
+  - source: quay.io/kiwigrid/k8s-sidecar
+    target: ${REGSYNC_TARGET_REGISTRY}/kiwigrid/k8s-sidecar
     type: repository
     tags:
+      semverRange:
+        - ">1.30.10"
       allow:
-        - "latest"                     # latest tag
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
-  - source: docker.io/nginxinc/nginx-unprivileged
-    target: ${REGISTRY}/${TARGET_REGISTRY}/nginx-unprivileged
+  - source: docker.io/library/busybox
+    target: ${REGSYNC_TARGET_REGISTRY}/library/busybox
     type: repository
     tags:
+      semverRange:
+        - ">1.36.0"
       allow:
-        - "1\\.29-alpine"              # 1.29-alpine
-        - "1\\.[3-9][0-9]+-alpine"     # 1.30+-alpine minor versions
-        - "[2-9]\\.[0-9]+-alpine"      # 2.0+-alpine major versions
-        - "[1-9][0-9]+\\.[0-9]+-alpine"  # 10.0+-alpine major versions
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
+  - source: docker.io/library/memcached
+    target: ${REGSYNC_TARGET_REGISTRY}/library/memcached
+    type: repository
+    tags:
+      semverRange:
+        - ">1.6.39"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
+
+  - source: docker.io/library/mongo-express
+    target: ${REGSYNC_TARGET_REGISTRY}/library/mongo-express
+    type: repository
+    tags:
+      semverRange:
+        - ">0.1.0"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: docker.io/library/mongo
+    target: ${REGSYNC_TARGET_REGISTRY}/library/mongo
+    type: repository
+    tags:
+      semverRange:
+        - ">7.0.18"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: docker.io/library/mysql
+    target: ${REGSYNC_TARGET_REGISTRY}/library/mysql
+    type: repository
+    tags:
+      semverRange:
+        - ">8.0.35"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: docker.io/library/nats
+    target: ${REGSYNC_TARGET_REGISTRY}/library/nats
+    type: repository
+    tags:
+      semverRange:
+        - ">2.10.0"
+      allow:
+        - '[0-9]+\.[0-9]+-alpine'
+        - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
+
+  - source: docker.io/library/postgres
+    target: ${REGSYNC_TARGET_REGISTRY}/library/postgres
+    type: repository
+    tags:
+      semverRange:
+        - ">13.0.0"
+      allow:
+        - '[0-9]+-alpine'
+        - '[0-9]+\.[0-9]+-alpine'
+
+  - source: docker.io/library/redis
+    target: ${REGSYNC_TARGET_REGISTRY}/library/redis
+    type: repository
+    tags:
+      semverRange:
+        - ">6.0.0"
+      allow:
+        - '[0-9]+\.[0-9]+-alpine'
+        - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
+
+  - source: docker.io/oliver006/redis_exporter
+    target: ${REGSYNC_TARGET_REGISTRY}/oliver006/redis_exporter
+    type: repository
+    tags:
+      semverRange:
+        - ">1.80.1"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: docker.io/percona/mongodb_exporter
+    target: ${REGSYNC_TARGET_REGISTRY}/percona/mongodb_exporter
+    type: repository
+    tags:
+      semverRange:
+        - ">0.47.1"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: docker.io/prom/memcached-exporter
+    target: ${REGSYNC_TARGET_REGISTRY}/prom/memcached-exporter
+    type: repository
+    tags:
+      semverRange:
+        - ">0.15.3"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: public.ecr.aws/docker/library/redis
+    target: ${REGSYNC_TARGET_REGISTRY}/library/redis
+    type: repository
+    tags:
+      semverRange:
+        - ">7.2.8"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
+
+  - source: ghcr.io/dexidp/dex
+    target: ${REGSYNC_TARGET_REGISTRY}/dexidp/dex
+    type: repository
+    tags:
+      semverRange:
+        - ">2.43.1"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: ghcr.io/external-secrets/external-secrets
+    target: ${REGSYNC_TARGET_REGISTRY}/external-secrets/external-secrets
+    type: repository
+    tags:
+      semverRange:
+        - ">1.1.0"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: ghcr.io/kafbat/kafka-ui
+    target: ${REGSYNC_TARGET_REGISTRY}/kafbat/kafka-ui
+    type: repository
+    tags:
+      semverRange:
+        - ">1.4.2"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: ghcr.io/telepresenceio/tel2
+    target: ${REGSYNC_TARGET_REGISTRY}/telepresenceio/tel2
+    type: repository
+    tags:
+      semverRange:
+        - ">2.25.1"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: registry.k8s.io/metadata-proxy/metadata-proxy
+    target: ${REGSYNC_TARGET_REGISTRY}/metadata-proxy
+    type: repository
+    tags:
+      semverRange:
+        - ">0.1.12"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: oci.external-secrets.io/external-secrets/external-secrets
+    target: ${REGSYNC_TARGET_REGISTRY}/oci-external-secrets/external-secrets
+    type: repository
+    tags:
+      semverRange:
+        - ">0.20.4"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: quay.io/argoproj/argocd
+    target: ${REGSYNC_TARGET_REGISTRY}/argoproj/argocd
+    type: repository
+    tags:
+      semverRange:
+        - ">3.0.12"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: quay.io/debezium/connect
+    target: ${REGSYNC_TARGET_REGISTRY}/debezium/connect
+    type: repository
+    tags:
+      semverRange:
+        - ">3.1.1"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+\.Final'
+
+  - source: quay.io/prometheus-operator/prometheus-config-reloader
+    target: ${REGSYNC_TARGET_REGISTRY}/prometheus-operator/prometheus-config-reloader
+    type: repository
+    tags:
+      semverRange:
+        - ">0.86.2"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: quay.io/prometheus-operator/prometheus-operator
+    target: ${REGSYNC_TARGET_REGISTRY}/prometheus-operator/prometheus-operator
+    type: repository
+    tags:
+      semverRange:
+        - ">0.86.2"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: quay.io/prometheus/node-exporter
+    target: ${REGSYNC_TARGET_REGISTRY}/prometheus/node-exporter
+    type: repository
+    tags:
+      semverRange:
+        - ">1.10.2"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: quay.io/prometheus/prometheus
+    target: ${REGSYNC_TARGET_REGISTRY}/prometheus/prometheus
+    type: repository
+    tags:
+      semverRange:
+        - ">3.7.3"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: docker.io/bitnamilegacy/redis-exporter
+    target: ${REGSYNC_TARGET_REGISTRY}/bitnamilegacy/redis-exporter
+    type: repository
+    tags:
+      semverRange:
+        - ">1.76.0"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
+
+  - source: docker.io/bitnamilegacy/redis
+    target: ${REGSYNC_TARGET_REGISTRY}/bitnamilegacy/redis
+    type: repository
+    tags:
+      semverRange:
+        - ">8.2.1"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
+
+  - source: registry.k8s.io/external-dns/external-dns
+    target: ${REGSYNC_TARGET_REGISTRY}/external-dns/external-dns
+    type: repository
+    tags:
+      semverRange:
+        - ">0.19.0"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: registry.k8s.io/kube-state-metrics/kube-state-metrics
+    target: ${REGSYNC_TARGET_REGISTRY}/kube-state-metrics/kube-state-metrics
+    type: repository
+    tags:
+      semverRange:
+        - ">2.17.0"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
