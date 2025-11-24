@@ -8,12 +8,6 @@ on:
   schedule:
     - cron: '0 2 * * 0'
   workflow_dispatch:
-    inputs:
-      parallel:
-        description: 'Number of parallel syncs'
-        required: false
-        default: '4'
-        type: string
 
 env:
   REGISTRY: ghcr.io
@@ -44,11 +38,8 @@ jobs:
           REGSYNC_VERSION: v0.10.0
         run: |
           echo "Installing regsync ${REGSYNC_VERSION}..."
-
-          # Download regsync binary
           curl -L "https://github.com/regclient/regclient/releases/download/${REGSYNC_VERSION}/regsync-linux-amd64" \
             -o /usr/local/bin/regsync
-
           chmod +x /usr/local/bin/regsync
 
       - name: Sync images
@@ -56,4 +47,4 @@ jobs:
           TARGET_REGISTRY: ${{ github.repository }}
         run: |
           envsubst < regsync-config.yaml > regsync-config-tmp.yaml
-          regsync check -c regsync-config-tmp.yaml 
+          regsync once -c regsync-config-tmp.yaml
