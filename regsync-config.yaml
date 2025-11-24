@@ -12,8 +12,8 @@ sync:
   - source: alpine
     target: ${REGISTRY}/${TARGET_REGISTRY}/alpine
     type: repository
-    tagSets: 
+    tags: 
       - semverRange:
-        - ">=3.18.0 <4.0"
+        - ">3.18.0"
         allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
