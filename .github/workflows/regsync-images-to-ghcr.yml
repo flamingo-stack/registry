@@ -45,7 +45,7 @@ jobs:
 
       - name: Sync images
         env:
-          TARGET_REGISTRY: ${{ github.repository }}
+          TARGET_REGISTRY: ghcr.io/${{ github.repository }}
         run: |
           envsubst < regsync-config.yaml > regsync-config-tmp.yaml
           regsync once -c regsync-config-tmp.yaml
