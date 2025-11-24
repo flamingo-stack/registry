@@ -1,4 +1,5 @@
-# Must override REGISTRY and TARGET_REGISTRY Env varibles
+# Must override TARGET_REGISTRY environment variable
+# Example: export TARGET_REGISTRY=ghcr.io/your-username
 
 version: 1
 
@@ -41,7 +42,7 @@ sync:
     type: repository
     tags:
       semverRange:
-        - ">=4.0.0"
+        - ">=3.5.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
 
@@ -237,14 +238,6 @@ sync:
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
-  - source: registry.k8s.io/metadata-proxy/metadata-proxy
-    target: ${TARGET_REGISTRY}/metadata-proxy
-    type: repository
-    tags:
-      semverRange:
-        - ">=0.1.12"
-      allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: oci.external-secrets.io/external-secrets/external-secrets
     target: ${TARGET_REGISTRY}/oci-external-secrets/external-secrets
@@ -269,7 +262,7 @@ sync:
     type: repository
     tags:
       semverRange:
-        - ">=3.1.1"
+        - ">=2.5.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+\.Final'
 
@@ -314,7 +307,7 @@ sync:
     type: repository
     tags:
       semverRange:
-        - ">=1.76.0"
+        - ">=1.58.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
 
@@ -323,7 +316,7 @@ sync:
     type: repository
     tags:
       semverRange:
-        - ">=8.2.1"
+        - ">=7.2.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
 
@@ -345,93 +338,93 @@ sync:
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
-  # Helm Charts (GHCR)
+  # Helm Charts (GHCR) - Tags without 'v' prefix
   - source: ghcr.io/grafana/helm-charts/grafana
     target: ${TARGET_REGISTRY}/helm-charts/grafana
     type: repository
     tags:
       semverRange:
-        - ">=10.2.0"
+        - ">=8.2.0"
       allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/grafana/helm-charts/loki
     target: ${TARGET_REGISTRY}/helm-charts/loki
     type: repository
     tags:
       semverRange:
-        - ">=6.46.0"
+        - ">=6.30.0"
       allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/grafana/helm-charts/promtail
     target: ${TARGET_REGISTRY}/helm-charts/promtail
     type: repository
     tags:
       semverRange:
-        - ">=6.17.1"
+        - ">=6.16.0"
       allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/external-secrets/charts/external-secrets
     target: ${TARGET_REGISTRY}/helm-charts/external-secrets
     type: repository
     tags:
       semverRange:
-        - ">=0.11.0"
+        - ">=0.10.0"
       allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/argoproj/argo-helm/argo-cd
     target: ${TARGET_REGISTRY}/helm-charts/argo-cd
     type: repository
     tags:
       semverRange:
-        - ">=8.2.7"
+        - ">=7.0.0"
       allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/prometheus-community/charts/kube-prometheus-stack
     target: ${TARGET_REGISTRY}/helm-charts/kube-prometheus-stack
     type: repository
     tags:
       semverRange:
-        - ">=79.7.1"
+        - ">=56.0.0"
       allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/prometheus-community/charts/prometheus-node-exporter
     target: ${TARGET_REGISTRY}/helm-charts/prometheus-node-exporter
     type: repository
     tags:
       semverRange:
-        - ">=4.49.1"
+        - ">=4.30.0"
       allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/prometheus-community/charts/kube-state-metrics
     target: ${TARGET_REGISTRY}/helm-charts/kube-state-metrics
     type: repository
     tags:
       semverRange:
-        - ">=6.4.1"
+        - ">=5.0.0"
       allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/prometheus-community/charts/prometheus-mongodb-exporter
     target: ${TARGET_REGISTRY}/helm-charts/prometheus-mongodb-exporter
     type: repository
     tags:
       semverRange:
-        - ">=3.15.0"
+        - ">=3.10.0"
       allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/prometheus-community/charts/prometheus-redis-exporter
     target: ${TARGET_REGISTRY}/helm-charts/prometheus-redis-exporter
     type: repository
     tags:
       semverRange:
-        - ">=6.20.1"
+        - ">=5.0.0"
       allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
