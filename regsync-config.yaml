@@ -346,6 +346,15 @@ sync:
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
+  - source: docker.io/ngrok/ngrok-operator
+    target: ${TARGET_REGISTRY}/ngrok/ngrok-operator
+    type: repository
+    tags:
+      semverRange:
+        - ">=0.19.0"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
+
   # Helm Charts (GHCR) - Tags without 'v' prefix
   - source: ghcr.io/grafana/helm-charts/grafana
     target: ${TARGET_REGISTRY}/helm-charts/grafana
