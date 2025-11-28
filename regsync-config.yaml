@@ -418,6 +418,15 @@ sync:
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
+  - source: docker.io/keelhq/keel
+    target: ${TARGET_REGISTRY}/keelhq/keel
+    type: repository
+    tags:
+      semverRange:
+        - ">=0.19.0"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
+
   # Helm Charts (GHCR) - Tags without 'v' prefix
   - source: ghcr.io/grafana/helm-charts/grafana
     target: ${TARGET_REGISTRY}/helm-charts/grafana
