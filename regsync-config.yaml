@@ -545,3 +545,12 @@ sync:
         - ">=21.2.10"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: ghcr.io/telepresenceio/telepresence-oss
+    target: ${TARGET_REGISTRY}/helm-charts/telepresence-oss
+    type: repository
+    tags:
+      semverRange:
+        - ">=2.23.6"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
