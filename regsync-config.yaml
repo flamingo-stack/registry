@@ -161,7 +161,7 @@ sync:
     type: repository
     tags:
       semverRange:
-        - ">=6.0.0"
+        - ">=5.0.0"
       allow:
         - '[0-9]+\.[0-9]+-alpine'
         - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
@@ -193,14 +193,6 @@ sync:
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
-  - source: public.ecr.aws/docker/library/redis
-    target: ${TARGET_REGISTRY}/library/redis
-    type: repository
-    tags:
-      semverRange:
-        - ">=7.2.8"
-      allow:
-        - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
 
   - source: ghcr.io/dexidp/dex
     target: ${TARGET_REGISTRY}/dexidp/dex
