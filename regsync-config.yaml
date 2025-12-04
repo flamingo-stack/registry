@@ -18,6 +18,7 @@ sync:
         - ">=0.1.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
+        - latest 
 
   - source: docker.io/curlimages/curl
     target: ${TARGET_REGISTRY}/curlimages/curl
