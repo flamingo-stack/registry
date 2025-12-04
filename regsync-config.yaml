@@ -13,12 +13,14 @@ sync:
   - source: docker.io/apachepinot/pinot
     target: ${TARGET_REGISTRY}/apachepinot/pinot
     type: repository
-    tags:
-      semverRange:
+    tagSets:  
+      - allow: # first set of tags is a fixed list of tags
+        - "latest"
+      - semverRange:
         - ">=0.1.0"
-      allow:
-        - '[0-9]+\.[0-9]+\.[0-9]+'
-        - latest 
+        allow:
+          - '[0-9]+\.[0-9]+\.[0-9]+'
+          - latest 
 
   - source: docker.io/curlimages/curl
     target: ${TARGET_REGISTRY}/curlimages/curl
@@ -55,6 +57,14 @@ sync:
         - ">=3.9.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
+
+  - source: docker.io/bitnamilegacy/jmx-exporter
+    target: ${TARGET_REGISTRY}/bitnamilegacy/jmx-exporter
+    type: repository
+    tags:
+      allow:
+        - '1\.([4-9]|[0-9]{2,})\.[0-9]+-debian-[0-9]+-r[0-9]+'
+        - '[2-9]\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
 
   - source: docker.io/grafana/grafana
     target: ${TARGET_REGISTRY}/grafana/grafana
@@ -167,6 +177,15 @@ sync:
         - '[0-9]+\.[0-9]+-alpine'
         - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
 
+  - source: docker.io/ngrok/ngrok-operator
+    target: ${TARGET_REGISTRY}/ngrok/ngrok-operator
+    type: repository
+    tags:
+      semverRange:
+        - ">=0.19.0"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
+
   - source: docker.io/oliver006/redis_exporter
     target: ${TARGET_REGISTRY}/oliver006/redis_exporter
     type: repository
@@ -231,6 +250,14 @@ sync:
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
+  - source: ghcr.io/sap/kubectl-container
+    target: ${TARGET_REGISTRY}/sap/kubectl-container
+    type: repository
+    tags:
+      semverRange:
+        - ">=1.31.6"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: oci.external-secrets.io/external-secrets/external-secrets
     target: ${TARGET_REGISTRY}/oci-external-secrets/external-secrets
@@ -273,6 +300,15 @@ sync:
     tags:
       semverRange:
         - ">=0.86.2"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: quay.io/prometheus/alertmanager
+    target: ${TARGET_REGISTRY}/prometheus/alertmanager
+    type: repository
+    tags:
+      semverRange:
+        - ">=0.29.0"
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
@@ -339,93 +375,12 @@ sync:
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
-  - source: docker.io/ngrok/ngrok-operator
-    target: ${TARGET_REGISTRY}/ngrok/ngrok-operator
-    type: repository
-    tags:
-      semverRange:
-        - ">=0.19.0"
-      allow:
-        - '[0-9]+\.[0-9]+\.[0-9]+'
-
-
-  - source: docker.io/bitnamilegacy/jmx-exporter
-    target: ${TARGET_REGISTRY}/bitnamilegacy/jmx-exporter
-    type: repository
-    tags:
-      allow:
-        - '1\.([4-9]|[0-9]{2,})\.[0-9]+-debian-[0-9]+-r[0-9]+'
-        - '[2-9]\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
-
   - source: registry.k8s.io/ingress-nginx/kube-webhook-certgen
     target: ${TARGET_REGISTRY}/ingress-nginx/kube-webhook-certgen
     type: repository
     tags:
       semverRange:
         - ">=1.5.0"
-      allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
-
-  - source: quay.io/prometheus/alertmanager
-    target: ${TARGET_REGISTRY}/prometheus/alertmanager
-    type: repository
-    tags:
-      semverRange:
-        - ">=0.29.0"
-      allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
-
-  - source: quay.io/jetstack/cert-manager-controller
-    target: ${TARGET_REGISTRY}/cert-manager/cert-manager-controller
-    type: repository
-    tags:
-      semverRange:
-        - ">=1.18.2"
-      allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
-
-  - source: quay.io/jetstack/cert-manager-webhook
-    target: ${TARGET_REGISTRY}/cert-manager/cert-manager-webhook
-    type: repository
-    tags:
-      semverRange:
-        - ">=1.18.2"
-      allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
-
-  - source: quay.io/jetstack/cert-manager-cainjector
-    target: ${TARGET_REGISTRY}/cert-manager/cert-manager-cainjector
-    type: repository
-    tags:
-      semverRange:
-        - ">=1.18.2"
-      allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
-
-  - source: quay.io/jetstack/cert-manager-acmesolver
-    target: ${TARGET_REGISTRY}/cert-manager/cert-manager-acmesolver
-    type: repository
-    tags:
-      semverRange:
-        - ">=1.18.2"
-      allow:
-        - 'v[0-9]+\.[0-9]+\.[0-9]+'
-
-  - source: docker.io/keelhq/keel
-    target: ${TARGET_REGISTRY}/keelhq/keel
-    type: repository
-    tags:
-      semverRange:
-        - ">=0.19.0"
-      allow:
-        - '[0-9]+\.[0-9]+\.[0-9]+'
-
-  - source: ghcr.io/sap/kubectl-container
-    target: ${TARGET_REGISTRY}/sap/kubectl-container
-    type: repository
-    tags:
-      semverRange:
-        - ">=1.31.6"
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
@@ -520,6 +475,7 @@ sync:
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
+  # Bitnami Helm Charts (OCI)
   - source: registry-1.docker.io/bitnamicharts/cassandra
     target: ${TARGET_REGISTRY}/helm-charts/cassandra
     type: repository
@@ -547,6 +503,52 @@ sync:
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
+  - source: docker.io/keelhq/keel
+    target: ${TARGET_REGISTRY}/keelhq/keel
+    type: repository
+    tags:
+      semverRange:
+        - ">=0.19.0"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: quay.io/jetstack/cert-manager-controller
+    target: ${TARGET_REGISTRY}/cert-manager/cert-manager-controller
+    type: repository
+    tags:
+      semverRange:
+        - ">=1.18.2"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: quay.io/jetstack/cert-manager-webhook
+    target: ${TARGET_REGISTRY}/cert-manager/cert-manager-webhook
+    type: repository
+    tags:
+      semverRange:
+        - ">=1.18.2"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: quay.io/jetstack/cert-manager-cainjector
+    target: ${TARGET_REGISTRY}/cert-manager/cert-manager-cainjector
+    type: repository
+    tags:
+      semverRange:
+        - ">=1.18.2"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: quay.io/jetstack/cert-manager-acmesolver
+    target: ${TARGET_REGISTRY}/cert-manager/cert-manager-acmesolver
+    type: repository
+    tags:
+      semverRange:
+        - ">=1.18.2"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  # Telepresence OSS Helm Chart
   - source: ghcr.io/telepresenceio/telepresence-oss
     target: ${TARGET_REGISTRY}/helm-charts/telepresence-oss
     type: repository
