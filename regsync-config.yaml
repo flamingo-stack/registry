@@ -391,7 +391,7 @@ sync:
     semverRange:
       - ">=2.3.8"
     allow:
-      - '[0-9]+\.[8-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
+      - '[0-9]+\.[0-9]+\.[8-9]+-debian-[0-9]+-r[0-9]+'
 
   # Helm Charts (GHCR) - Tags without 'v' prefix
   - source: ghcr.io/grafana/helm-charts/grafana
