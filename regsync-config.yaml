@@ -16,6 +16,7 @@ sync:
     tagSets:  
       - allow: # first set of tags is a fixed list of tags
         - "latest"
+        - "1.5.0-SNAPSHOT-43142cdc37-20251204"
       - semverRange:
         - ">=0.1.0"
         allow:
