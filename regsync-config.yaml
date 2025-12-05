@@ -384,6 +384,15 @@ sync:
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
+  - source: docker.io/bitnamilegacy/cassandra-exporter
+      target: ${TARGET_REGISTRY}/bitnamilegacy/cassandra-exporter
+      type: repository
+      tags:
+      semverRange:
+        - ">=2.3.0"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
+
   # Helm Charts (GHCR) - Tags without 'v' prefix
   - source: ghcr.io/grafana/helm-charts/grafana
     target: ${TARGET_REGISTRY}/helm-charts/grafana
@@ -548,7 +557,6 @@ sync:
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
-  # Telepresence OSS Helm Chart
   - source: ghcr.io/telepresenceio/telepresence-oss
     target: ${TARGET_REGISTRY}/helm-charts/telepresence-oss
     type: repository
