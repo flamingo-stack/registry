@@ -40,6 +40,7 @@ sync:
         - ">=5.0.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/bitnamilegacy/kafka
     target: ${TARGET_REGISTRY}/bitnamilegacy/kafka
@@ -49,6 +50,7 @@ sync:
         - ">=3.5.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/bitnamilegacy/zookeeper
     target: ${TARGET_REGISTRY}/bitnamilegacy/zookeeper
@@ -58,6 +60,7 @@ sync:
         - ">=3.9.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/bitnamilegacy/jmx-exporter
     target: ${TARGET_REGISTRY}/bitnamilegacy/jmx-exporter
@@ -352,6 +355,7 @@ sync:
         - ">=1.58.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/bitnamilegacy/redis
     target: ${TARGET_REGISTRY}/bitnamilegacy/redis
@@ -361,6 +365,7 @@ sync:
         - ">=7.2.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: registry.k8s.io/external-dns/external-dns
     target: ${TARGET_REGISTRY}/external-dns/external-dns
@@ -406,6 +411,7 @@ sync:
       - ">=2.3.8"
     allow:
       - '[0-9]+\.[0-9]+\.[8-9]+-debian-[0-9]+-r[0-9]+'
+      - '[0-9]+\.[0-9]+\.[0-9]+'
   
   - source: docker.io/bitnamilegacy/mongodb-exporter
     target: ${TARGET_REGISTRY}/bitnamilegacy/mongodb-exporter
