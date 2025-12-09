@@ -77,7 +77,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/grafana/loki
-    target: ${TARGET_REGISTRY}/loki
+    target: ${TARGET_REGISTRY}/grafana/loki
     type: repository
     tags:
       semverRange:
@@ -104,7 +104,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/library/busybox
-    target: ${TARGET_REGISTRY}/library/busybox
+    target: ${TARGET_REGISTRY}/busybox
     type: repository
     tags:
       semverRange:
@@ -113,7 +113,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/library/memcached
-    target: ${TARGET_REGISTRY}/library/memcached
+    target: ${TARGET_REGISTRY}/memcached
     type: repository
     tags:
       allow:
@@ -122,7 +122,7 @@ sync:
         - '[2-9]\.[0-9]+\.[0-9]+-alpine'
 
   - source: docker.io/library/mongo-express
-    target: ${TARGET_REGISTRY}/library/mongo-express
+    target: ${TARGET_REGISTRY}/mongo-express
     type: repository
     tags:
       semverRange:
@@ -140,7 +140,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/library/mysql
-    target: ${TARGET_REGISTRY}/library/mysql
+    target: ${TARGET_REGISTRY}/mysql
     type: repository
     tags:
       semverRange:
@@ -149,7 +149,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: docker.io/library/nats
-    target: ${TARGET_REGISTRY}/library/nats
+    target: ${TARGET_REGISTRY}/nats
     type: repository
     tags:
       semverRange:
@@ -159,7 +159,7 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
 
   - source: docker.io/library/postgres
-    target: ${TARGET_REGISTRY}/library/postgres
+    target: ${TARGET_REGISTRY}/postgres
     type: repository
     tags:
       semverRange:
@@ -169,7 +169,7 @@ sync:
         - '[0-9]+\.[0-9]+-alpine'
 
   - source: docker.io/library/redis
-    target: ${TARGET_REGISTRY}/library/redis
+    target: ${TARGET_REGISTRY}/redis
     type: repository
     tags:
       semverRange:
