@@ -108,7 +108,7 @@ sync:
     type: repository
     tags:
       semverRange:
-        - ">=1.36.0"
+        - ">=1.30.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
