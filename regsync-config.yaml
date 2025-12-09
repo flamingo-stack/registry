@@ -111,6 +111,7 @@ sync:
         - ">=1.30.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
+        - '^[0-9]+\.[0-9]+$'
 
   - source: docker.io/library/memcached
     target: ${TARGET_REGISTRY}/memcached
