@@ -164,6 +164,24 @@ sync:
         - '[0-9]+\.[0-9]+-alpine'
         - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
 
+  - source: docker.io/natsio/nats-server-config-reloader
+    target: ${TARGET_REGISTRY}/natsio/nats-server-config-reloader
+    type: repository
+    tags:
+      semverRange:
+        - ">=0.21.1"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: docker.io/natsio/prometheus-nats-exporter
+    target: ${TARGET_REGISTRY}/natsio/prometheus-nats-exporter
+    type: repository
+    tags:
+      semverRange:
+        - ">=0.18.0"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
+
   - source: docker.io/library/postgres
     target: ${TARGET_REGISTRY}/postgres
     type: repository
@@ -541,6 +559,15 @@ sync:
     tags:
       semverRange:
         - ">=21.2.10"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: registry-1.docker.io/bitnamicharts/zookeeper
+    target: ${TARGET_REGISTRY}/helm-charts/zookeeper
+    type: repository
+    tags:
+      semverRange:
+        - ">=13.8.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
