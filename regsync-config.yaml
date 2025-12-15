@@ -238,6 +238,14 @@ sync:
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
+  - source: ghcr.io/goauthentik/server
+    target: ${TARGET_REGISTRY}/goauthentik/server
+    type: repository
+    tags:
+      semverRange:
+        - ">=2024.1.0"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/dexidp/dex
     target: ${TARGET_REGISTRY}/dexidp/dex
