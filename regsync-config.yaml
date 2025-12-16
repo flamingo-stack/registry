@@ -90,6 +90,15 @@ sync:
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
+  - source: docker.io/grafana/alloy
+    target: ${TARGET_REGISTRY}/grafana/alloy
+    type: repository
+    tags:
+      semverRange:
+        - ">=1.2.0"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
   - source: docker.io/grafana/promtail
     target: ${TARGET_REGISTRY}/grafana/promtail
     type: repository
@@ -333,7 +342,7 @@ sync:
     type: repository
     tags:
       semverRange:
-        - ">=0.86.2"
+        - ">=0.80.0"
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
@@ -461,14 +470,6 @@ sync:
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
-  - source: ghcr.io/grafana/helm-charts/alloy
-    target: ${TARGET_REGISTRY}/helm-charts/alloy
-    type: repository
-    tags:
-      semverRange:
-        - ">=1.4.0"
-      allow:
-        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ghcr.io/grafana/helm-charts/loki
     target: ${TARGET_REGISTRY}/helm-charts/loki
