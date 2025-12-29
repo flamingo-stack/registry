@@ -96,6 +96,8 @@ sync:
         - '[0-9]+\.[0-9]+-alpine'
         - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
 
+  
+
   # ---------------------------------------------------------------------------
   # Message Queues & Streaming
   # Event streaming platforms, message brokers, and distributed coordination
@@ -353,6 +355,25 @@ sync:
     tags:
       semverRange:
         - ">=1.80.1"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: docker.io/prom/mysqld-exporter
+    target: ${TARGET_REGISTRY}/prom/mysqld-exporter
+    type: repository
+    tags:
+      semverRange:
+        - ">=0.18.0"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+
+  - source: quay.io/prometheuscommunity/postgres-exporter
+    target: ${TARGET_REGISTRY}/prometheuscommunity/postgres-exporter
+    type: repository
+    tags:
+      semverRange:
+        - ">=0.16.0"
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
