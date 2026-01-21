@@ -114,6 +114,15 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
+  - source: docker.io/danielqsj/kafka-exporter
+    target: ${TARGET_REGISTRY}/danielqsj/kafka-exporter
+    type: repository
+    tags:
+      semverRange:
+        - ">=1.8.0"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
   - source: ghcr.io/kafbat/kafka-ui
     target: ${TARGET_REGISTRY}/kafbat/kafka-ui
     type: repository
