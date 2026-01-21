@@ -96,6 +96,16 @@ sync:
         - '[0-9]+\.[0-9]+-alpine'
         - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
 
+  - source: ecr-public.aws.com/docker/library/redis
+    target: ${TARGET_REGISTRY}/ecr-public/redis
+    type: repository
+    tags:
+      semverRange:
+        - ">=8.0.0"
+      allow:
+        - '[0-9]+\.[0-9]+-alpine'
+        - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
+
   
 
   # ---------------------------------------------------------------------------
@@ -448,6 +458,25 @@ sync:
         - ">=3.0.12"
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: quay.io/argoprojlabs/argocd-extension-installer
+    target: ${TARGET_REGISTRY}/argoprojlabs/argocd-extension-installer
+    type: repository
+    tags:
+      semverRange:
+        - ">=0.0.9"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: ecr-public.aws.com/docker/library/haproxy
+    target: ${TARGET_REGISTRY}/ecr-public/haproxy
+    type: repository
+    tags:
+      semverRange:
+        - ">=2.8.0"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
+        - '[0-9]+\.[0-9]+-alpine'
 
   - source: docker.io/keelhq/keel
     target: ${TARGET_REGISTRY}/keelhq/keel
