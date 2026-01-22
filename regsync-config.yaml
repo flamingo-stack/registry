@@ -96,15 +96,6 @@ sync:
         - '[0-9]+\.[0-9]+-alpine'
         - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
 
-  - source: ecr-public.aws.com/docker/library/redis
-    target: ${TARGET_REGISTRY}/ecr-public/redis
-    type: repository
-    tags:
-      semverRange:
-        - ">=8.0.0"
-      allow:
-        - '[0-9]+\.[0-9]+-alpine'
-        - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
 
   
 
@@ -469,7 +460,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: ecr-public.aws.com/docker/library/haproxy
-    target: ${TARGET_REGISTRY}/ecr-public/haproxy
+    target: ${TARGET_REGISTRY}/haproxy
     type: repository
     tags:
       semverRange:
