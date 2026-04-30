@@ -86,6 +86,16 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
+  - source: docker.io/bitnamilegacy/redis-cluster
+    target: ${TARGET_REGISTRY}/bitnamilegacy/redis-cluster
+    type: repository
+    tags:
+      semverRange:
+        - ">=7.0.0"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+'
+
   - source: docker.io/library/redis
     target: ${TARGET_REGISTRY}/redis
     type: repository
@@ -628,6 +638,15 @@ sync:
     tags:
       semverRange:
         - ">=21.2.10"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: registry-1.docker.io/bitnamicharts/redis-cluster
+    target: ${TARGET_REGISTRY}/helm-charts/redis-cluster
+    type: repository
+    tags:
+      semverRange:
+        - ">=11.0.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
