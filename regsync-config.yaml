@@ -249,14 +249,15 @@ sync:
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
-  # Loki SimpleScalable gateway reverse proxy (chart `gateway.image`)
-  # 3-part -alpine only: semverRange drops 2-part major.minor-alpine tags (not semver-parseable)
+  # Loki SimpleScalable gateway reverse proxy (chart `gateway.image` = 1.31.2-alpine)
+  # 3-part -alpine only (semverRange drops 2-part tags). Floor kept at 1.31.0 so the sync
+  # fetches only ~3 tags — avoids Docker Hub rate-limiting on nginx's huge tag list.
   - source: docker.io/nginxinc/nginx-unprivileged
     target: ${TARGET_REGISTRY}/nginxinc/nginx-unprivileged
     type: repository
     tags:
       semverRange:
-        - ">=1.29.0"
+        - ">=1.31.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
 
