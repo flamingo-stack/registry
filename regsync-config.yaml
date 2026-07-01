@@ -564,6 +564,15 @@ sync:
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
+  - source: registry.k8s.io/prometheus-adapter/prometheus-adapter
+    target: ${TARGET_REGISTRY}/prometheus-adapter/prometheus-adapter
+    type: repository
+    tags:
+      semverRange:
+        - ">=0.12.0"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
   # ---------------------------------------------------------------------------
   # Networking & Tunneling
   # Secure tunnels and local development tools for Kubernetes
