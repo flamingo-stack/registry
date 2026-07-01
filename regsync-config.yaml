@@ -249,6 +249,17 @@ sync:
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
+  # Loki SimpleScalable gateway reverse proxy (chart `gateway.image`)
+  - source: docker.io/nginxinc/nginx-unprivileged
+    target: ${TARGET_REGISTRY}/nginxinc/nginx-unprivileged
+    type: repository
+    tags:
+      semverRange:
+        - ">=1.29.0"
+      allow:
+        - '[0-9]+\.[0-9]+-alpine'
+        - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
+
   - source: docker.io/grafana/mimir
     target: ${TARGET_REGISTRY}/grafana/mimir
     type: repository
