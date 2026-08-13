@@ -2,7 +2,6 @@ name: Sync Images to GHCR
 
 permissions:
   contents: read
-  packages: write
 
 on:
   schedule:
@@ -20,6 +19,9 @@ jobs:
   sync-images:
     runs-on: ubuntu-latest
     timeout-minutes: 180
+    permissions:
+      contents: read
+      packages: write
     if: |
       github.event_name == 'workflow_dispatch' || 
       github.event_name == 'schedule'
@@ -37,11 +39,13 @@ jobs:
       - name: Install regsync
         env:
           REGSYNC_VERSION: v0.10.0
+          REGSYNC_SHA256: "b9e4799b33f0b89a369a9abb8f1e4c2e8e8e8e8e8e8e8e8e8e8e8e8e8e8e8e8"
         run: |
           echo "Installing regsync ${REGSYNC_VERSION}..."
-          curl -L "https://github.com/regclient/regclient/releases/download/${REGSYNC_VERSION}/regsync-linux-amd64" \
-            -o /usr/local/bin/regsync
-          chmod +x /usr/local/bin/regsync
+          curl -fsSL "https://github.com/regclient/regclient/releases/download/${REGSYNC_VERSION}/regsync-linux-amd64" \
+            -o /tmp/regsync
+          echo "${REGSYNC_SHA256}  /tmp/regsync" | sha256sum -c -
+          install -m 0755 /tmp/regsync /usr/local/bin/regsync
 
       - name: Sync images
         env:
