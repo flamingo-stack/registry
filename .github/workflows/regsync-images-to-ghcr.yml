@@ -25,7 +25,7 @@ jobs:
       github.event_name == 'schedule'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Log in to GHCR
         uses: docker/login-action@v3
@@ -33,6 +33,13 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        continue-on-error: true
       
       - name: Install regsync
         env:
@@ -44,8 +51,13 @@ jobs:
           chmod +x /usr/local/bin/regsync
 
       - name: Sync images
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 150
+          max_attempts: 3
+          retry_wait_seconds: 60
+          command: |
+            envsubst < regsync-config.yaml > regsync-config-tmp.yaml
+            regsync once -c regsync-config-tmp.yaml
         env:
           TARGET_REGISTRY: ghcr.io/${{ github.repository }}
-        run: |
-          envsubst < regsync-config.yaml > regsync-config-tmp.yaml
-          regsync once -c regsync-config-tmp.yaml
