@@ -8,6 +8,8 @@ on:
   schedule:
     - cron: '0 2 * * 0'
   workflow_dispatch:
+    branches:
+      - main
 
 env:
   REGISTRY: ghcr.io
@@ -37,10 +39,12 @@ jobs:
       - name: Install regsync
         env:
           REGSYNC_VERSION: v0.10.0
+          REGSYNC_SHA256: "b9e4298c1a5e5e0f2b2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f"
         run: |
           echo "Installing regsync ${REGSYNC_VERSION}..."
           curl -L "https://github.com/regclient/regclient/releases/download/${REGSYNC_VERSION}/regsync-linux-amd64" \
             -o /usr/local/bin/regsync
+          echo "${REGSYNC_SHA256}  /usr/local/bin/regsync" | sha256sum --check
           chmod +x /usr/local/bin/regsync
 
       - name: Sync images
