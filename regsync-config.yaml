@@ -20,8 +20,8 @@ sync:
   # Includes: Cassandra, Memcached, MongoDB, MySQL, PostgreSQL, Redis
   # ---------------------------------------------------------------------------
 
-  - source: docker.io/bitnamilegacy/cassandra
-    target: ${TARGET_REGISTRY}/bitnamilegacy/cassandra
+  - source: docker.io/bitnami/cassandra
+    target: ${TARGET_REGISTRY}/bitnami/cassandra
     type: repository
     tags:
       semverRange:
@@ -76,8 +76,8 @@ sync:
         - '[0-9]+-alpine'
         - '[0-9]+\.[0-9]+-alpine'
 
-  - source: docker.io/bitnamilegacy/redis
-    target: ${TARGET_REGISTRY}/bitnamilegacy/redis
+  - source: docker.io/bitnami/redis
+    target: ${TARGET_REGISTRY}/bitnami/redis
     type: repository
     tags:
       semverRange:
@@ -86,8 +86,8 @@ sync:
         - '[0-9]+\.[0-9]+\.[0-9]+-debian-[0-9]+-r[0-9]+'
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
-  - source: docker.io/bitnamilegacy/redis-cluster
-    target: ${TARGET_REGISTRY}/bitnamilegacy/redis-cluster
+  - source: docker.io/bitnami/redis-cluster
+    target: ${TARGET_REGISTRY}/bitnami/redis-cluster
     type: repository
     tags:
       semverRange:
@@ -114,8 +114,8 @@ sync:
   # Includes: Kafka, Kafka UI, NATS, ZooKeeper
   # ---------------------------------------------------------------------------
 
-  - source: docker.io/bitnamilegacy/kafka
-    target: ${TARGET_REGISTRY}/bitnamilegacy/kafka
+  - source: docker.io/bitnami/kafka
+    target: ${TARGET_REGISTRY}/bitnami/kafka
     type: repository
     tags:
       semverRange:
@@ -170,8 +170,8 @@ sync:
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
-  - source: docker.io/bitnamilegacy/zookeeper
-    target: ${TARGET_REGISTRY}/bitnamilegacy/zookeeper
+  - source: docker.io/bitnami/zookeeper
+    target: ${TARGET_REGISTRY}/bitnami/zookeeper
     type: repository
     tags:
       semverRange:
@@ -194,27 +194,14 @@ sync:
         - '2\.([5-9]|[0-9]{2,})\.[0-9]+\.Final'
         - '[3-9]\.[0-9]+\.[0-9]+\.Final'
 
-  - source: quay.io/debezium/connect
-    target: ${TARGET_REGISTRY}/debezium/connect
-    type: repository
-    tags:
-      semverRange:
-        - ">=3.0.0"
-      allow:
-        - '[0-9]+\.[0-9]+\.[0-9]+'
-
   - source: docker.io/apachepinot/pinot
     target: ${TARGET_REGISTRY}/apachepinot/pinot
     type: repository
-    tagSets:
-      - allow:
-          - "latest"
-          - "1.5.0-SNAPSHOT-43142cdc37-20251204"
-      - semverRange:
-          - ">=0.1.0"
-        allow:
-          - '[0-9]+\.[0-9]+\.[0-9]+'
-          - latest
+    tags:
+      semverRange:
+        - ">=0.1.0"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
 
   # ---------------------------------------------------------------------------
   # Monitoring & Observability
@@ -312,8 +299,8 @@ sync:
   # Includes: Cassandra, JMX, Memcached, MongoDB, Node, Redis exporters
   # ---------------------------------------------------------------------------
 
-  - source: docker.io/bitnamilegacy/cassandra-exporter
-    target: ${TARGET_REGISTRY}/bitnamilegacy/cassandra-exporter
+  - source: docker.io/bitnami/cassandra-exporter
+    target: ${TARGET_REGISTRY}/bitnami/cassandra-exporter
     type: repository
     tags:
       semverRange:
@@ -322,8 +309,8 @@ sync:
         - '[0-9]+\.[0-9]+\.[8-9]+-debian-[0-9]+-r[0-9]+'
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
-  - source: docker.io/bitnamilegacy/jmx-exporter
-    target: ${TARGET_REGISTRY}/bitnamilegacy/jmx-exporter
+  - source: docker.io/bitnami/jmx-exporter
+    target: ${TARGET_REGISTRY}/bitnami/jmx-exporter
     type: repository
     tags:
       semverRange:
@@ -341,8 +328,8 @@ sync:
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
-  - source: docker.io/bitnamilegacy/mongodb-exporter
-    target: ${TARGET_REGISTRY}/bitnamilegacy/mongodb-exporter
+  - source: docker.io/bitnami/mongodb-exporter
+    target: ${TARGET_REGISTRY}/bitnami/mongodb-exporter
     type: repository
     tags:
       semverRange:
@@ -370,8 +357,8 @@ sync:
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
-  - source: docker.io/bitnamilegacy/redis-exporter
-    target: ${TARGET_REGISTRY}/bitnamilegacy/redis-exporter
+  - source: docker.io/bitnami/redis-exporter
+    target: ${TARGET_REGISTRY}/bitnami/redis-exporter
     type: repository
     tags:
       semverRange:
