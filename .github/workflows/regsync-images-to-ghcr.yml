@@ -6,7 +6,7 @@ permissions:
 
 on:
   schedule:
-    - cron: '0 2 * * 0'
+    - cron: '0 2 * * *'
   workflow_dispatch:
 
 env:
@@ -44,8 +44,14 @@ jobs:
           chmod +x /usr/local/bin/regsync
 
       - name: Sync images
+        uses: nick-fields/retry@v3
         env:
           TARGET_REGISTRY: ghcr.io/${{ github.repository }}
-        run: |
-          envsubst < regsync-config.yaml > regsync-config-tmp.yaml
-          regsync once -c regsync-config-tmp.yaml
+        with:
+          timeout_minutes: 170
+          max_attempts: 3
+          retry_wait_seconds: 60
+          command: |
+            envsubst < regsync-config.yaml > /tmp/regsync-config-tmp.yaml
+            regsync once -c /tmp/regsync-config-tmp.yaml
+
