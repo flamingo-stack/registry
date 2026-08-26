@@ -133,6 +133,13 @@ sync:
       allow:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
+  # kafka_exporter has had no tagged release since v1.9.0 (2025-02-17), but the
+  # Go and x/crypto CVE fixes are on master, published only as :latest. Mirrored
+  # by digest into an immutable local tag so the deployed reference cannot drift.
+  - source: docker.io/danielqsj/kafka-exporter@sha256:a51b280b55a763deaa1bc5024310bc2954995d9160014d7445055dac6a090868
+    target: ${TARGET_REGISTRY}/danielqsj/kafka-exporter:v1.9.0-master-20260413
+    type: image
+
   - source: ghcr.io/kafbat/kafka-ui
     target: ${TARGET_REGISTRY}/kafbat/kafka-ui
     type: repository
