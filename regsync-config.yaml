@@ -459,7 +459,7 @@ sync:
   # ---------------------------------------------------------------------------
   # GitOps & Continuous Delivery
   # Declarative deployment and automated release management tools
-  # Includes: Argo CD, Keel
+  # Includes: Argo CD, Keel, Reloader
   # ---------------------------------------------------------------------------
 
   - source: quay.io/argoproj/argocd
@@ -479,6 +479,15 @@ sync:
         - ">=0.19.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: ghcr.io/stakater/reloader
+    target: ${TARGET_REGISTRY}/stakater/reloader
+    type: repository
+    tags:
+      semverRange:
+        - ">=1.4.0"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   # ---------------------------------------------------------------------------
   # Kubernetes Infrastructure
@@ -809,7 +818,7 @@ sync:
   # ---------------------------------------------------------------------------
   # GitOps & Continuous Delivery
   # Helm charts for GitOps and deployment automation
-  # Includes: Argo CD
+  # Includes: Argo CD, Reloader
   # ---------------------------------------------------------------------------
 
   - source: ghcr.io/argoproj/argo-helm/argo-cd
@@ -818,6 +827,16 @@ sync:
     tags:
       semverRange:
         - ">=7.0.0"
+      allow:
+        - '[0-9]+\.[0-9]+\.[0-9]+'
+
+  # Stakater serves this over an HTTP Helm repo, not OCI — same chartproxy hop as nats
+  - source: chartproxy.container-registry.com/stakater.github.io/stakater-charts/reloader
+    target: ${TARGET_REGISTRY}/helm-charts/reloader
+    type: repository
+    tags:
+      semverRange:
+        - ">=2.2.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
