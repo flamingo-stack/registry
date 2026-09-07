@@ -190,30 +190,26 @@ sync:
     target: ${TARGET_REGISTRY}/debezium/connect
     type: repository
     tags:
-      allow:
-        - '2\.([5-9]|[0-9]{2,})\.[0-9]+\.Final'
-        - '[3-9]\.[0-9]+\.[0-9]+\.Final'
-
-  - source: quay.io/debezium/connect
-    target: ${TARGET_REGISTRY}/debezium/connect
-    type: repository
-    tags:
       semverRange:
         - ">=3.0.0"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
+        - '[0-9]+\.[0-9]+\.[0-9]+\.Final'
 
   - source: docker.io/apachepinot/pinot
     target: ${TARGET_REGISTRY}/apachepinot/pinot
     type: repository
     tagSets:
       - allow:
+          # "latest" retained: upstream publishes rolling SNAPSHOT/latest builds
+          # used for pre-release testing; pinned alongside explicit SNAPSHOT tag.
           - "latest"
           - "1.5.0-SNAPSHOT-43142cdc37-20251204"
       - semverRange:
           - ">=0.1.0"
         allow:
           - '[0-9]+\.[0-9]+\.[0-9]+'
+          # "latest" retained here for the same reason as above.
           - latest
 
   # ---------------------------------------------------------------------------
@@ -854,3 +850,4 @@ sync:
         - ">=2.23.6"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
+
