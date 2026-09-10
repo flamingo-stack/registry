@@ -492,7 +492,7 @@ sync:
   # ---------------------------------------------------------------------------
   # Infrastructure as Code
   # Crossplane control plane and its GCP provider packages (OCI xpkg artifacts)
-  # Includes: Crossplane, provider-family-gcp, provider-gcp-cloudplatform
+  # Includes: Crossplane, provider-family-gcp, provider-gcp-cloudplatform, provider-gcp-storage
   # ---------------------------------------------------------------------------
 
   - source: xpkg.crossplane.io/crossplane/crossplane
@@ -515,6 +515,15 @@ sync:
 
   - source: xpkg.upbound.io/upbound/provider-gcp-cloudplatform
     target: ${TARGET_REGISTRY}/upbound/provider-gcp-cloudplatform
+    type: repository
+    tags:
+      semverRange:
+        - ">=3.0.0"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: xpkg.upbound.io/upbound/provider-gcp-storage
+    target: ${TARGET_REGISTRY}/upbound/provider-gcp-storage
     type: repository
     tags:
       semverRange:
