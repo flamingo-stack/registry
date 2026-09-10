@@ -523,6 +523,39 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   # ---------------------------------------------------------------------------
+  # Infrastructure as Code
+  # Crossplane control plane and its GCP provider packages (OCI xpkg artifacts)
+  # Includes: Crossplane, provider-family-gcp, provider-gcp-cloudplatform
+  # ---------------------------------------------------------------------------
+
+  - source: xpkg.crossplane.io/crossplane/crossplane
+    target: ${TARGET_REGISTRY}/crossplane/crossplane
+    type: repository
+    tags:
+      semverRange:
+        - ">=2.3.5"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: xpkg.upbound.io/upbound/provider-family-gcp
+    target: ${TARGET_REGISTRY}/upbound/provider-family-gcp
+    type: repository
+    tags:
+      semverRange:
+        - ">=3.0.0"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  - source: xpkg.upbound.io/upbound/provider-gcp-cloudplatform
+    target: ${TARGET_REGISTRY}/upbound/provider-gcp-cloudplatform
+    type: repository
+    tags:
+      semverRange:
+        - ">=3.0.0"
+      allow:
+        - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+  # ---------------------------------------------------------------------------
   # Kubernetes Infrastructure
   # Core K8s components for certificates, ingress, DNS, and cluster management
   # Includes: Cert-Manager, External DNS, Ingress NGINX, K8s Sidecar, kubectl, Kube State Metrics
