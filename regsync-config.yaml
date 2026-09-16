@@ -705,7 +705,7 @@ sync:
   # ---------------------------------------------------------------------------
   # Utilities
   # General-purpose base images and helper containers
-  # Includes: BusyBox, curl
+  # Includes: BusyBox, curl, Google Cloud SDK
   # ---------------------------------------------------------------------------
 
   - source: docker.io/library/busybox
@@ -727,13 +727,15 @@ sync:
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
 
-  # gcloud for the meshcentral pre-delete hook. no semverRange: -alpine is a prerelease and sorts below the bare tag
+  # gcloud for the meshcentral pre-delete hook. the floor carries -alpine because a prerelease sorts below the bare tag
   - source: docker.io/google/cloud-sdk
     target: ${TARGET_REGISTRY}/google/cloud-sdk
     type: repository
     tags:
+      semverRange:
+        - ">=585.0.0-alpine"
       allow:
-        - '(58[5-9]|59[0-9]|[6-9][0-9][0-9]|[0-9]{4,})\.[0-9]+\.[0-9]+-alpine'
+        - '[0-9]+\.[0-9]+\.[0-9]+-alpine'
 
   # =============================================================================
   # HELM CHARTS
