@@ -1,229 +1,90 @@
-# Testing Overview
+# Testing
 
-This document describes how to validate and test registry entries in the **Flamingo Registry**. Because the registry is a structured data catalog (not a compiled application), "testing" primarily means **schema validation, linting, and integrity checks**.
+> **Repository role:** `flamingo-stack/registry` is a registry-sync utility repository. Its code graph reports no indexed source symbols, no published packages, and no active code-review rules — the repository's function, as evidenced by its workflow files, is to mirror container images into GHCR on a schedule rather than to ship an application with a conventional test suite.
 
-## What We Test
+## Test structure and organization
 
-The Flamingo Registry uses a multi-layer validation approach:
+This repository does not contain a `package.json`, a `pom.xml`, or any application source tree that the code graph could index (the ecosystem snapshot for `flamingo-stack/registry` reports zero symbols and zero references). There is no `src/`, `test/`, or `__tests__/` directory in the material available for this repository, and no test framework configuration (Jest, JUnit, pytest, etc.) is present.
 
-```mermaid
-graph TD
-    Commit["New Registry Entry\n(YAML / JSON file)"]
-    Syntax["Layer 1\nYAML Syntax Check\n(yamllint)"]
-    Schema["Layer 2\nSchema Validation\n(JSON Schema / YAML Schema)"]
-    Integrity["Layer 3\nIntegrity Checks\n(Duplicate names, URL format)"]
-    CI["Layer 4\nCI Pipeline\n(Automated on every PR)"]
-    Approved["Entry Approved\nfor Merge"]
+The repository's only executable logic lives in its GitHub Actions workflows:
 
-    Commit --> Syntax
-    Syntax --> Schema
-    Schema --> Integrity
-    Integrity --> CI
-    CI --> Approved
+- `.github/workflows/doc-orchestrator.yml` — the documentation pipeline definition (not application code).
+- `.github/workflows/flamingo-code-review.yml` — the automated code-review pipeline definition (not application code).
+- `.github/workflows/regsync-images-to-ghcr.yml` — the actual functional workflow of this repository: it installs `regsync` and runs it against `regsync-config.yaml` to sync container images into `ghcr.io/${{ github.repository }}`.
+
+Because there is no application code, there is no conventional unit/integration/e2e test directory structure to document here. "Testing" in this repository is best understood as **validating the workflow and its configuration**, not exercising application logic with a test runner.
+
+> **Note:** If your fork or branch of this repository grows an application layer (scripts, services, or libraries), add a standard test directory (for example `test/` or `__tests__/`) next to that new code and update this document — the code graph will pick up new symbols on the next indexed push to `main` and this page should be revised to describe them.
+
+## Running tests
+
+There is no test command (`npm test`, `mvn test`, `pytest`, etc.) defined anywhere in this repository's manifests, because no package manifest exists here. Consequently there is nothing to invoke as an automated test suite today.
+
+What you **can** run and verify locally is the sync workflow's own logic, since it is plain shell wrapped in a GitHub Actions job:
+
+```yaml
+- name: Install regsync
+  env:
+    REGSYNC_VERSION: v0.10.0
+  run: |
+    echo "Installing regsync ${REGSYNC_VERSION}..."
+    curl -L "https://github.com/regclient/regclient/releases/download/${REGSYNC_VERSION}/regsync-linux-amd64" \
+      -o /usr/local/bin/regsync
+    chmod +x /usr/local/bin/regsync
+
+- name: Sync images
+  env:
+    TARGET_REGISTRY: ghcr.io/${{ github.repository }}
+  run: |
+    envsubst < regsync-config.yaml > regsync-config-tmp.yaml
+    regsync once -c regsync-config-tmp.yaml
 ```
 
-| Test Layer | Tool | What It Checks |
-|---|---|---|
-| **YAML Syntax** | `yamllint` | Valid YAML syntax, indentation, trailing spaces |
-| **Schema Validation** | JSON Schema validator | Required fields, correct types, valid enum values |
-| **Integrity Checks** | Shell scripts / grep | No duplicate entry names, valid URL formats |
-| **CI Pipeline** | GitHub Actions (or similar) | All of the above, run automatically on PRs |
-
----
-
-## Running Tests Locally
-
-Always validate your entries locally before pushing a PR. This catches errors early and speeds up the review process.
-
-### Layer 1: YAML Syntax Validation
+To validate a change to `regsync-config.yaml` or the sync job before merging, you can reproduce this manually:
 
 ```bash
-# Validate a single file
-yamllint catalog/services/my-service.yaml
+# Install the same regsync binary the workflow pins
+curl -L "https://github.com/regclient/regclient/releases/download/v0.10.0/regsync-linux-amd64" \
+  -o /usr/local/bin/regsync
+chmod +x /usr/local/bin/regsync
 
-# Validate all catalog entries
-yamllint catalog/
-
-# Validate with verbose output
-yamllint -v catalog/
+# Render the config the same way the job does, then dry-run it
+export TARGET_REGISTRY="ghcr.io/flamingo-stack/registry"
+envsubst < regsync-config.yaml > regsync-config-tmp.yaml
+regsync once -c regsync-config-tmp.yaml
 ```
 
-**Passing output (no issues):** The command exits silently with code 0.
+You can also exercise the workflow itself, end-to-end, via its manual trigger instead of waiting for the weekly schedule (`cron: '0 2 * * 0'`):
 
-**Failing output example:**
+1. Go to the **Actions** tab on `https://github.com/flamingo-stack/registry`.
+2. Select **Sync Images to GHCR**.
+3. Trigger it with `workflow_dispatch` (the job's `if:` condition explicitly allows `workflow_dispatch` in addition to `schedule`).
 
-```text
-catalog/services/my-service.yaml
-  5:3     error    wrong indentation: expected 4 but found 2  (indentation)
-  12:1    warning  missing document start "---"  (document-start)
-```
+The **🦩 Flamingo Code Documentation** workflow (`.github/workflows/doc-orchestrator.yml`) and **🦩 Flamingo Code Review** workflow (`.github/workflows/flamingo-code-review.yml`) are themselves org-standard, generated pipelines — they are not to be edited by hand, and are not part of this repository's own test surface. The code-review workflow's `flamingo-code-review.yml` header notes it is "Generated by the Flamingo hub — do not edit by hand," so any validation of its behavior belongs to that pipeline's own repository, not here.
 
-Fix any reported errors before proceeding.
+## Writing new tests
 
-### Layer 2: Schema Validation
+Since this repository has no package manifest and no indexed source symbols (confirmed by the code graph: `symbol_count: 0`, `reference_count: 0` for the `main` branch snapshot), there is no existing test harness to extend. If you introduce actual application or library code to this repository, follow these guidelines when adding tests for it:
 
-If the repository includes a schema validation script:
+- Match the test framework to the language you introduce (for example, add a `package.json` with a `test` script and Jest/Vitest for TypeScript/JavaScript, or a `pom.xml` with the Surefire/Failsafe plugins for Java). None of these exist yet — pick the framework that matches the SSOT ecosystem conventions used elsewhere at Flamingo Stack rather than inventing a bespoke one.
+- Co-locate tests with the code they exercise, or under a top-level `test/`/`tests/` directory, so the pipeline's Stage 1 inline-documentation and Stage 2 CodeWiki analysis (described in `.github/workflows/doc-orchestrator.yml`) can associate tests with the symbols they cover once the code graph starts indexing this repository.
+- For changes to `regsync-config.yaml` or the sync job itself, validate manually with the `regsync once -c ...` command shown above before merging, since there is no CI test job wired to this workflow beyond the sync run itself.
+- Keep any new workflow-level validation scripts as plain, auditable shell inside the job step (as `regsync-images-to-ghcr.yml` does today) rather than introducing a hidden test layer, so `CODEOWNERS` reviewers (`@flamingo-stack/devops-engineers`, per `.github/CODEOWNERS`) can review the exact commands that will run in CI.
 
-```bash
-# Check for available validation tooling
-ls Makefile justfile scripts/ 2>/dev/null
+> Because the automated code-review pipeline (`flamingo-code-review.yml`) runs against this repository, any new source files you add will be reviewed under its active rule set once merged. At the time of writing, no repository-specific review rules are registered for `flamingo-stack/registry` beyond the org defaults, so there is no rule catalog to cross-check new tests against yet.
 
-# Run schema validation (adjust to the actual command in the repo)
-make validate
-# or
-./scripts/validate.sh
-```
+## Coverage requirements
 
-If no automated script is available, you can use `ajv-cli` (a JSON Schema validator) manually:
+There is no coverage tool, coverage configuration, or coverage threshold defined in this repository — no `jest.config`, no `jacoco` plugin, no `.coveragerc`, and no CI step that computes or gates on coverage. The only CI-visible signal for this repository's actual job (`regsync-images-to-ghcr.yml`) is whether the `Sync images` step completes successfully; it does not produce or check a coverage report.
 
-```bash
-# Install ajv-cli
-npm install -g ajv-cli
+If this repository grows application code that warrants a coverage gate, define it explicitly alongside the new test framework (for example, a coverage threshold enforced in the same job that runs the tests) and update this section — do not assume an implicit percentage requirement exists today, because none is configured anywhere in the material available for this repository.
 
-# Validate a YAML file against a schema (convert to JSON first)
-yq -o=json catalog/services/my-service.yaml > /tmp/my-service.json
-ajv validate -s schemas/service.schema.json -d /tmp/my-service.json
-```
+Until then, treat the following as the practical bar for a change here:
 
-### Layer 3: Integrity Checks
+| Area | What "covered" means today |
+|------|------------------------------|
+| `regsync-config.yaml` | Manually dry-run with `regsync once -c ...` against a real or staging registry before merging. |
+| `.github/workflows/regsync-images-to-ghcr.yml` | Exercised via manual `workflow_dispatch` run in the Actions tab, observed to complete without error. |
+| `.github/workflows/doc-orchestrator.yml`, `.github/workflows/flamingo-code-review.yml` | Org-generated; changes should be validated against the upstream generator, not hand-tested here. |
 
-#### Check for Duplicate Entry Names
-
-```bash
-# Extract all entry names and find duplicates
-grep -rh "^  name:" catalog/ | sort | uniq -d
-```
-
-If this command produces output, there are duplicate names — resolve them before committing.
-
-#### Validate URL Format
-
-```bash
-# Find all URLs in catalog entries
-grep -rh "https\?://" catalog/ | grep -oP "https?://[^\s'\"]+" | sort -u
-```
-
-Review the list to ensure all URLs are:
-- Using HTTPS (not HTTP) where possible
-- Pointing to publicly accessible endpoints
-- Not containing embedded credentials or tokens
-
----
-
-## Writing New Tests
-
-As the registry grows, new validation rules may be added. When contributing a new check:
-
-### Adding a Schema Constraint
-
-Edit the relevant schema file in `schemas/`. For example, to require a new field `spec.homepage`:
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "required": ["apiVersion", "kind", "metadata", "spec"],
-  "properties": {
-    "spec": {
-      "type": "object",
-      "required": ["homepage"],
-      "properties": {
-        "homepage": {
-          "type": "string",
-          "format": "uri"
-        }
-      }
-    }
-  }
-}
-```
-
-After adding a schema constraint, update all existing entries in `catalog/` to comply with the new requirement.
-
-### Adding a Shell-Based Integrity Check
-
-If you're adding a new integrity check (e.g., enforcing a naming convention):
-
-```bash
-#!/usr/bin/env bash
-# scripts/check-naming.sh
-# Ensures all entry names use kebab-case
-
-VIOLATIONS=$(grep -rh "^  name:" catalog/ | grep -vP "^  name: [a-z][a-z0-9-]+$")
-
-if [ -n "$VIOLATIONS" ]; then
-  echo "ERROR: The following entries have invalid names (must be kebab-case):"
-  echo "$VIOLATIONS"
-  exit 1
-fi
-
-echo "All entry names are valid."
-```
-
-Make the script executable:
-
-```bash
-chmod +x scripts/check-naming.sh
-```
-
-Add it to your CI pipeline configuration.
-
----
-
-## CI Pipeline
-
-The Flamingo Registry uses a CI pipeline (e.g., GitHub Actions) to run all validation checks automatically on every pull request.
-
-### What the CI Pipeline Does
-
-```mermaid
-sequenceDiagram
-    participant PR as Pull Request
-    participant CI as CI Pipeline
-    participant Lint as YAML Lint
-    participant Schema as Schema Validator
-    participant Integrity as Integrity Checks
-    participant Review as Maintainer Review
-
-    PR->>CI: PR opened or updated
-    CI->>Lint: Run yamllint
-    Lint-->>CI: Pass or fail
-    CI->>Schema: Run schema validation
-    Schema-->>CI: Pass or fail
-    CI->>Integrity: Run integrity checks
-    Integrity-->>CI: Pass or fail
-    CI-->>PR: Report status (green / red)
-    PR->>Review: Maintainer reviews if CI passes
-```
-
-### CI Status
-
-- **Green (passing)**: All validation layers passed — the PR is ready for maintainer review
-- **Red (failing)**: One or more checks failed — the contributor must fix the issues before review
-
----
-
-## Coverage Requirements
-
-| Check | Requirement |
-|---|---|
-| YAML syntax validation | All files in `catalog/` must pass |
-| Schema validation | All entries must conform to their `kind` schema |
-| No duplicate names | Zero duplicates across the entire catalog |
-| URL format | All `spec.homepage` and `spec.documentation` fields must be valid URIs |
-
----
-
-## Troubleshooting Common Validation Failures
-
-| Error | Likely Cause | Fix |
-|---|---|---|
-| `wrong indentation` | Tabs instead of spaces, or wrong indent size | Use 2-space indentation throughout |
-| `missing document start "---"` | YAML file doesn't start with `---` | Add `---` as the first line |
-| `required field missing` | Schema requires a field not present in the entry | Add the missing field |
-| `format: uri` violation | A URL field has an invalid format | Ensure the URL starts with `https://` |
-| `Duplicate name found` | Two entries share the same `metadata.name` | Rename one of the conflicting entries |
-
----
-
-> For the contribution workflow after tests pass, see [Contributing Guidelines](../contributing/guidelines.md).
+For broader context on how this repository fits the rest of the Flamingo Stack organization, see the development overview.

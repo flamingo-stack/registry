@@ -1,56 +1,47 @@
-# Development Documentation
+# Development
 
-Welcome to the development section of the **Flamingo Registry**. This section covers everything you need to contribute to the registry, understand its architecture, and follow best practices for security, testing, and collaboration.
+This section is the starting point for anyone contributing code, tests, or review-process changes to the `flamingo-stack/registry` repository. It brings together the guides that describe how to build, test, secure, and contribute to the project.
+
+> **Note:** The repository graph currently reports no published packages, upstream dependencies, or downstream consumers for this repository, and no `package.json` or `pom.xml` was found during indexing. The development guides below focus on process and practices; refer to your environment configuration for any project-specific build tooling not yet reflected in the indexed material.
 
 ## Overview
 
-The Flamingo Registry is an open-source catalog repository within the [OpenFrame](https://openframe.ai) platform ecosystem. Contributing to it means adding, updating, or validating structured data entries (services, integrations, components) that power the MSP automation platform.
+The development documentation covers everything you need to work on this codebase day to day:
 
-## Documentation Index
+- How changes are tested before merge
+- How security is handled during development
+- The guidelines contributors are expected to follow
+- Where to go first if you are new to the project
+
+Each topic lives in its own guide so you can jump directly to what you need.
+
+## Development Documentation
 
 | Guide | Description |
 |---|---|
-| [Environment Setup](setup/environment.md) | IDE setup, recommended tools, and editor configuration |
-| [Local Development](setup/local-development.md) | Cloning, running locally, and validating changes |
-| [Architecture Overview](architecture/README.md) | How the registry is structured and how it fits in the platform |
-| [Security Guidelines](security/README.md) | Secrets management, access control, and secure contribution patterns |
-| [Testing Overview](testing/README.md) | How to validate registry entries and run checks |
-| [Contributing Guidelines](contributing/guidelines.md) | Code style, branching, commit messages, and PR process |
+| [Testing](./testing/README.md) | How tests are organized and run in this repository. |
+| [Security](./security/README.md) | Security practices and considerations for development work. |
+| [Contributing Guidelines](./contributing/guidelines.md) | Expectations and process for submitting changes. |
 
 ## Quick Navigation
 
-```mermaid
-graph LR
-    Dev["Development\nDocs"]
-    Env["Environment\nSetup"]
-    Local["Local\nDevelopment"]
-    Arch["Architecture\nOverview"]
-    Sec["Security\nGuidelines"]
-    Test["Testing\nOverview"]
-    Contrib["Contributing\nGuidelines"]
+- **New to the project?** Start with the [Introduction](../getting-started/introduction.md) to understand what Registry is and how it fits into the broader Flamingo/OpenFrame ecosystem before diving into development work.
+- **Writing or running tests?** Go to [Testing](./testing/README.md).
+- **Handling sensitive data or reviewing security-relevant changes?** Go to [Security](./security/README.md).
+- **Preparing a contribution?** Read the [Contributing Guidelines](./contributing/guidelines.md) before opening any changes.
 
-    Dev --> Env
-    Dev --> Local
-    Dev --> Arch
-    Dev --> Sec
-    Dev --> Test
-    Dev --> Contrib
+## Working With This Repository
+
+Since there is no Github Issues or Github Discussions workflow for this project, all community discussion, questions, and coordination happen on the OpenMSP Slack community rather than in-repository threads. Keep this in mind when planning contributions: process and coordination details belong in the [Contributing Guidelines](./contributing/guidelines.md), not in issue trackers.
+
+```mermaid
+flowchart LR
+    Start[New Contributor] --> Intro[Introduction Guide]
+    Intro --> Contrib[Contributing Guidelines]
+    Contrib --> Testing[Testing Guide]
+    Contrib --> Security[Security Guide]
+    Testing --> PR[Submit Changes]
+    Security --> PR
 ```
 
-## Who Should Read This Section?
-
-| Audience | Relevant Guides |
-|---|---|
-| **First-time contributors** | Environment Setup → Local Development → Contributing Guidelines |
-| **Platform operators** | Architecture Overview → Security Guidelines |
-| **CI/CD maintainers** | Testing Overview → Local Development |
-| **Security reviewers** | Security Guidelines → Contributing Guidelines |
-
-## Getting Help
-
-All support and discussion happens on the **OpenMSP Slack community**:
-
-- Join: [https://www.openmsp.ai/](https://www.openmsp.ai/)
-- Invite: [https://join.slack.com/t/openmsp/shared_invite/zt-36bl7mx0h-3~U2nFH6nqHqoTPXMaHEHA](https://join.slack.com/t/openmsp/shared_invite/zt-36bl7mx0h-3~U2nFH6nqHqoTPXMaHEHA)
-
-The repository is hosted at: [https://github.com/flamingo-stack/registry](https://github.com/flamingo-stack/registry)
+Use this page as the map for development work in this repository: each linked guide goes into depth on its own topic, and this overview stays the single entry point for navigating between them.

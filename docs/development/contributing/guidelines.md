@@ -1,235 +1,152 @@
 # Contributing Guidelines
 
-Thank you for contributing to the **Flamingo Registry**! This document covers the conventions, workflows, and standards we follow to keep the registry consistent, high-quality, and easy to maintain.
+Thank you for your interest in contributing to the **Registry** repository, part of the [Flamingo](https://flamingo.run) / [OpenFrame](https://openframe.ai) ecosystem. This document describes how code style, branching, commits, and reviews are handled in this repository.
 
-The registry is part of the [OpenFrame](https://openframe.ai) platform ecosystem and is maintained as an open-source project by the Flamingo Stack community.
+> **Note:** This repository does not use GitHub Issues or GitHub Discussions for coordination. All community discussion, questions, and support happen on the **OpenMSP Slack community**: [openmsp.ai](https://www.openmsp.ai/) — join via the [Slack invite link](https://join.slack.com/t/openmsp/shared_invite/zt-36bl7mx0h-3~U2nFH6nqHqoTPXMaHEHA). Please use Slack rather than opening a GitHub Issue.
 
-## Code of Conduct
+## Table of Contents
 
-We are a welcoming, inclusive community. All contributors are expected to be respectful, constructive, and collaborative. For real-time discussion and support, join us on:
-
-- **OpenMSP Slack**: [https://www.openmsp.ai/](https://www.openmsp.ai/)
-- **Invite link**: [https://join.slack.com/t/openmsp/shared_invite/zt-36bl7mx0h-3~U2nFH6nqHqoTPXMaHEHA](https://join.slack.com/t/openmsp/shared_invite/zt-36bl7mx0h-3~U2nFH6nqHqoTPXMaHEHA)
+- [Code Ownership](#code-ownership)
+- [Code Style and Conventions](#code-style-and-conventions)
+- [Branch Naming and PR Process](#branch-naming-and-pr-process)
+- [Commit Message Format](#commit-message-format)
+- [Automated Code Review](#automated-code-review)
+- [Review Checklist](#review-checklist)
 
 ---
 
-## Naming and Style Conventions
+## Code Ownership
 
-### Entry Names (metadata.name)
-
-All registry entry names must follow **kebab-case** (lowercase words separated by hyphens):
-
-| ✅ Correct | ❌ Incorrect |
-|---|---|
-| `connectwise-manage` | `ConnectWise_Manage` |
-| `datto-rmm` | `DattoRMM` |
-| `azure-ad-integration` | `azure ad integration` |
-
-Rules:
-- Lowercase only
-- Words separated by hyphens (`-`), not underscores (`_`) or spaces
-- Must be globally unique within the catalog
-- Should reflect the vendor or service name clearly
-
-### File Naming
-
-Registry entry files should match the `metadata.name` field:
+This repository defines ownership through the [`.github/CODEOWNERS`](https://github.com/flamingo-stack/registry/blob/main/.github/CODEOWNERS) file. Ownership rules are **last-match-wins**, so broader patterns are listed above more specific ones:
 
 ```text
-catalog/integrations/connectwise-manage.yaml    ← metadata.name: connectwise-manage
-catalog/services/notification-service.yaml      ← metadata.name: notification-service
+*                          @flamingo-stack/devops-engineers
+/.github/CODEOWNERS        @flamingo-stack/devops-engineers
 ```
 
-### YAML Style
+In practice this means:
 
-- Use **2-space indentation** (no tabs)
-- Include a document start marker (`---`) at the top of every file
-- Use double quotes for string values that contain special characters
-- Keep lines under 120 characters where possible
+- The `@flamingo-stack/devops-engineers` team owns the entire repository by default.
+- Changes to `.github/CODEOWNERS` itself are also owned by `@flamingo-stack/devops-engineers`.
 
-```yaml
+Any pull request that touches files under a given pattern will automatically request review from the matching team. Keep this in mind when opening a PR — review requests are assigned by GitHub based on this file, not manually.
+
 ---
-apiVersion: registry.flamingo.run/v1
-kind: Integration
-metadata:
-  name: my-integration
-  version: "1.0.0"
-  description: "A clear, concise description of this integration"
-  labels:
-    category: psa
-    vendor: my-vendor
-spec:
-  homepage: "https://vendor.example.com"
-  documentation: "https://docs.vendor.example.com"
-  maintainers:
-    - name: Your Name
-      contact: "https://www.openmsp.ai/"
-```
 
-### Version Format
+## Code Style and Conventions
 
-All entries must use **Semantic Versioning** ([semver.org](https://semver.org)):
+This repository's automation stack (documentation and code-review pipelines) is driven by GitHub Actions workflows under `.github/workflows/`, including:
+
+- [`.github/workflows/doc-orchestrator.yml`](https://github.com/flamingo-stack/registry/blob/main/.github/workflows/doc-orchestrator.yml) — the documentation generation pipeline.
+- [`.github/workflows/flamingo-code-review.yml`](https://github.com/flamingo-stack/registry/blob/main/.github/workflows/flamingo-code-review.yml) — the automated AI code-review pipeline.
+- [`.github/workflows/regsync-images-to-ghcr.yml`](https://github.com/flamingo-stack/registry/blob/main/.github/workflows/regsync-images-to-ghcr.yml) — a scheduled job that syncs container images into GHCR.
+
+When contributing changes to these or any other files in the repository, follow these general conventions:
+
+- **Keep workflow files declarative and well-commented.** The existing workflows in this repository favor extensive inline comments explaining *why* a trigger, guard, or condition exists — not just *what* it does. Follow that pattern when modifying automation.
+- **Never hardcode secrets or tokens** directly in a workflow step. Secrets must be passed per-step (as seen in `doc-orchestrator.yml` and `flamingo-code-review.yml`), never placed in job-level `env:` blocks, to avoid exposure in setup logs.
+- **Prefer explicit, named environment variables** over inline literals, and document fallbacks with comments (see the `env:` blocks in `doc-orchestrator.yml` for the established pattern of `client_payload` → `inputs` → literal fallback chains).
+- **YAML formatting:** two-space indentation, and keep list/mapping structure consistent with the existing workflow files.
+- For scheduled or sync-style jobs like `regsync-images-to-ghcr.yml`, pin third-party tool versions explicitly (e.g. `REGSYNC_VERSION: v0.10.0`) rather than tracking `latest`.
+
+If you are proposing a substantial change to how the documentation or review pipelines behave, discuss it first on the OpenMSP Slack community so maintainers are aware before you invest time in the change.
+
+---
+
+## Branch Naming and PR Process
+
+### Branching
+
+Work should be branched from `main`, which is the default branch used by the automation in this repository (see `SOURCE_BRANCH` default of `'main'` in `doc-orchestrator.yml`). Use descriptive branch names that reflect the nature of the change, for example:
 
 ```text
-MAJOR.MINOR.PATCH
-
-Examples:
-  1.0.0      ← Initial release
-  1.1.0      ← Backward-compatible new features
-  1.1.1      ← Backward-compatible bug fixes
-  2.0.0      ← Breaking changes
+fix/regsync-timeout
+chore/update-codeowners
+docs/contributing-guidelines
 ```
 
----
+### Opening a Pull Request
 
-## Branch Naming
+1. Branch from `main`.
+2. Make your changes, following the conventions above.
+3. Push your branch and open a pull request against `main` at [flamingo-stack/registry/pulls](https://github.com/flamingo-stack/registry/pulls).
+4. Do **not** open a paired GitHub Issue for the change — describe context and rationale directly in the PR description, and use the OpenMSP Slack community for any broader discussion.
+5. The automated review pipeline (`flamingo-code-review.yml`) reviews the PR automatically once it enters review:
+   - It reviews when the PR is **opened**, marked **ready for review**, **reopened**, or when the `flamingo-review` label is applied.
+   - It does **not** re-review on every subsequent push (`synchronize` is intentionally excluded by default) — this is designed to avoid noisy, repeated reviews on every commit.
+   - To request another pass after the initial review, add the `flamingo-review` label to the PR, or leave a top-level comment starting with `@flamingo-review` (use `@flamingo-review full` to force a full re-read of the entire cumulative diff instead of just the incremental delta).
+   - If you need continuous review on every push (e.g. for a large or risky refactor), apply the `flamingo-review-always` label, which subscribes the PR to review on every `synchronize` event.
+6. Draft PRs are excluded from automatic review — the review runs once the PR is marked ready for review.
+7. Ensure your PR does not modify only `docs/**` or `**.md` paths if you intend to trigger a code-graph reindex — those paths are deliberately excluded from the `push` trigger so that documentation-only merges do not rebuild the code graph.
 
-All work should happen on **feature branches**. Never commit directly to `main`.
+### Merging
 
-| Branch Type | Pattern | Example |
-|---|---|---|
-| New registry entry | `feat/<entry-name>` | `feat/connectwise-manage` |
-| Update existing entry | `fix/<entry-name>` | `fix/datto-rmm-version` |
-| Schema changes | `schema/<change-description>` | `schema/add-category-field` |
-| Documentation updates | `docs/<topic>` | `docs/update-contributing-guide` |
-| CI/tooling changes | `ci/<change-description>` | `ci/add-schema-validation` |
-
-```bash
-# Create a feature branch
-git checkout -b feat/my-new-integration
-```
+- Pull requests are merged into `main`.
+- CODEOWNERS-based review is required from `@flamingo-stack/devops-engineers` for changes across the repository (or the relevant matching team, if ownership rules are extended in the future).
 
 ---
 
 ## Commit Message Format
 
-We follow the **Conventional Commits** specification ([conventionalcommits.org](https://www.conventionalcommits.org/)):
+Write clear, descriptive commit messages that explain the **intent** of a change, not just the mechanics. Favor the same standard of explanation seen in this repository's existing workflow files, where non-obvious decisions carry a short rationale.
+
+Guidelines:
+
+- Use the imperative mood in the subject line (e.g. "Fix regsync timeout", not "Fixed" or "Fixes").
+- Keep the subject line concise (ideally under ~72 characters).
+- If the change is non-trivial, add a body explaining **why**, especially for changes to automation/workflow files, where a comment-free diff can be hard to reason about later.
+- Reference the relevant Slack discussion instead of a GitHub Issue number, since Issues are not used in this repository.
+
+Example:
 
 ```text
-<type>(<scope>): <short description>
+Pin regsync to v0.10.0 in image sync workflow
 
-[optional body]
-
-[optional footer]
+Avoids picking up untested regsync releases automatically.
+Discussed on OpenMSP Slack (#openframe-dev).
 ```
 
-### Types
+---
 
-| Type | When to Use |
+## Automated Code Review
+
+Every pull request that enters review is evaluated by the **Flamingo Code Review** pipeline (`.github/workflows/flamingo-code-review.yml`). Understanding how it triggers will help you get a timely review:
+
+| Trigger | When it fires |
 |---|---|
-| `feat` | Adding a new registry entry |
-| `fix` | Correcting an existing entry (wrong version, broken URL, etc.) |
-| `schema` | Changes to schema definitions |
-| `docs` | Documentation-only changes |
-| `ci` | Changes to CI/CD pipeline configuration |
-| `chore` | Maintenance tasks (renaming files, cleanup) |
+| `pull_request: opened` | When a new (non-draft) PR is created |
+| `pull_request: ready_for_review` | When a draft PR is marked ready |
+| `pull_request: reopened` | When a closed PR is reopened |
+| `pull_request: labeled` (`flamingo-review`) | On-demand re-review request |
+| `pull_request: synchronize` (with `flamingo-review-always` label) | Continuous review on every push, opt-in only |
+| `issue_comment: created` (`@flamingo-review`) | Manual re-review via PR comment, from a user with write access |
+| `issue_comment: edited` (checkbox toggle) | Re-review triggered by checking a task box in the bot's own summary comment |
 
-### Examples
+Key behaviors to be aware of as a contributor:
 
-```bash
-# Adding a new integration entry
-git commit -m "feat(integrations): add connectwise-manage entry"
-
-# Fixing a broken URL in an existing entry
-git commit -m "fix(integrations): update homepage URL for datto-rmm"
-
-# Updating the service schema
-git commit -m "schema(service): add required homepage field"
-
-# Updating documentation
-git commit -m "docs(contributing): clarify branch naming conventions"
-```
+- The `flamingo-review` label is **consumed automatically** once processed — it is removed by a dedicated job so that re-applying it can trigger review again.
+- The `flamingo-review-always` label is **durable** — it is not auto-removed, since it represents an ongoing "keep reviewing this PR" preference.
+- Comment-based re-review commands only work from users with `OWNER`, `MEMBER`, or `COLLABORATOR` association, and only on comments/edits made by a human (not by the bot itself), to prevent re-triggering loops.
+- Fork-originated pull requests are handled carefully: the workflow explicitly checks that the head repository matches the base repository before consuming labels or resolving comment commands, since a fork PR only carries a read-only token.
 
 ---
 
-## Pull Request Process
+## Review Checklist
 
-### Before Opening a PR
+Before requesting review (or re-review) on a pull request, verify:
 
-1. **Validate locally** — run `yamllint catalog/` and any available schema validation scripts
-2. **Check for duplicates** — ensure your `metadata.name` doesn't already exist in the catalog
-3. **Review your entry** — read through the final YAML one more time for completeness and accuracy
-4. **Sync with main** — rebase your branch on the latest `main`:
-
-```bash
-git fetch origin
-git rebase origin/main
-```
-
-### Opening the Pull Request
-
-- **Title**: Follow the same Conventional Commits format as your commit message
-  - ✅ `feat(integrations): add connectwise-manage integration`
-  - ❌ `Added new thing`
-- **Description**: Include a brief explanation of what the entry is and why it's being added
-- **Checklist**: Complete the PR checklist (see below)
-
-### PR Checklist
-
-```text
-Pull Request Checklist:
-
-[ ] Entry name follows kebab-case naming convention
-[ ] File name matches metadata.name
-[ ] YAML syntax is valid (yamllint passes)
-[ ] Schema validation passes (if tooling available)
-[ ] Version follows semantic versioning
-[ ] All URLs are valid HTTPS endpoints
-[ ] No secrets or credentials included
-[ ] No duplicate entry names in the catalog
-[ ] Description is clear and accurate
-[ ] Labels are set appropriately (category, vendor)
-```
-
-### Review Process
-
-1. CI pipeline runs automatically — all checks must pass
-2. At least one maintainer reviews the entry
-3. Feedback is provided via PR comments
-4. After approval, a maintainer merges the PR into `main`
-
-> **Note:** We don't use GitHub Issues or GitHub Discussions. For questions about your PR, reach out on the [OpenMSP Slack](https://www.openmsp.ai/).
+- [ ] The branch is based on the latest `main`.
+- [ ] The PR description explains **what** changed and **why**, with a link to any relevant OpenMSP Slack discussion if applicable.
+- [ ] No secrets, tokens, or credentials are hardcoded anywhere in the diff, especially in workflow files.
+- [ ] Any new or modified GitHub Actions step that needs a secret passes it **per-step**, not via job-level `env:`.
+- [ ] Workflow YAML changes preserve the existing comment style, explaining rationale for non-obvious conditions (trigger guards, fallback chains, concurrency groups).
+- [ ] Any change to `.github/workflows/doc-orchestrator.yml` preserves the `paths-ignore` exclusion of `docs/**` and `**.md` on the `push` trigger, so documentation merges do not needlessly rebuild the code graph.
+- [ ] Any change to `.github/workflows/flamingo-code-review.yml` preserves the fork-safety checks (`head.repo.full_name == github.repository`) before any job that could act with write permissions or secrets.
+- [ ] Version pins for third-party tools (e.g. `REGSYNC_VERSION` in `regsync-images-to-ghcr.yml`) are updated deliberately, not left to float.
+- [ ] `.github/CODEOWNERS` is updated if new paths need dedicated ownership beyond the default `@flamingo-stack/devops-engineers` coverage.
+- [ ] Commit messages follow the format described above.
+- [ ] No GitHub Issue was opened for this change — context lives in the PR description or the OpenMSP Slack community.
 
 ---
 
-## Updating Existing Entries
-
-When updating an existing registry entry:
-
-1. **Bump the version** — increment `metadata.version` following semver rules
-2. **Describe the change** — update or add a `changelog` field if the schema supports it
-3. **Use a `fix/` branch** — follow the branch naming conventions above
-
-```yaml
-# Before
-metadata:
-  version: "1.0.0"
-
-# After (patch fix)
-metadata:
-  version: "1.0.1"
-```
-
----
-
-## Reviewing Pull Requests
-
-All community members are welcome to review PRs. When reviewing:
-
-- Focus on **accuracy** (is the information correct?) and **completeness** (are all required fields present?)
-- Check for **naming convention compliance**
-- Validate that **URLs are accessible** and point to the right resources
-- Flag any **security concerns** (see [Security Guidelines](../security/README.md))
-- Be **constructive and respectful** in all feedback
-
----
-
-## Getting Help
-
-Stuck? Have a question about the contribution process?
-
-- **OpenMSP Slack**: [https://www.openmsp.ai/](https://www.openmsp.ai/) — the primary support channel
-- **Pull Requests**: [https://github.com/flamingo-stack/registry/pulls](https://github.com/flamingo-stack/registry/pulls) — see existing PRs for examples
-- **Releases**: [https://github.com/flamingo-stack/registry/releases](https://github.com/flamingo-stack/registry/releases) — see what's been shipped
-
-Thank you for helping build the Flamingo Registry! 🦩
+For environment setup and local development workflow, see the [Development overview](../README.md) and [Local Development guide](../setup/local-development.md). For prerequisites before you start contributing, see [Prerequisites](../../getting-started/prerequisites.md) and [Quick Start](../../getting-started/quick-start.md).

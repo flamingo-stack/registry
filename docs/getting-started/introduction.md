@@ -1,83 +1,54 @@
-# Introduction to Flamingo Registry
+# Introduction
 
-Welcome to the **Flamingo Registry** — the central catalog and discovery hub for services, integrations, and components within the [Flamingo](https://flamingo.run) / [OpenFrame](https://openframe.ai) ecosystem.
+## What is Registry?
 
-## What Is the Flamingo Registry?
+**Registry** (`flamingo-stack/registry`) is a repository within the [Flamingo Stack](https://flamingo.run) organization, the team behind [Flamingo](https://flamingo.run) — an AI-powered MSP (Managed Service Provider) platform that replaces expensive proprietary software with open-source alternatives enhanced by intelligent automation — and [OpenFrame](https://openframe.ai) ([flamingo.run/openframe](https://www.flamingo.run/openframe)), the unified platform that brings multiple MSP tools together under a single AI-driven interface to automate IT support operations across the stack.
 
-The Flamingo Registry is an open-source component of the OpenFrame platform that provides a **unified service directory** for MSP (Managed Service Provider) tooling. It acts as the source of truth for discovering, versioning, and referencing the building blocks that power AI-driven IT operations.
+At this stage, the repository graph has no recorded manifests, published artifacts, upstream dependencies, or downstream consumers for Registry: its role in the broader Flamingo/OpenFrame ecosystem is not yet established in the code graph. This document will be updated as the codebase and its integrations evolve. In the meantime, the sections below describe the intended shape of the getting-started documentation and how the repository fits into the wider organization.
 
-Think of it as the **package index and service catalog** for the OpenFrame ecosystem — enabling teams to:
-
-- Register and discover platform services and integrations
-- Maintain versioned catalogs of OpenFrame components
-- Provide a machine-readable index for Mingo AI and Fae to resolve dependencies
-- Support automated IT support workflows with a well-known service topology
+> **Note:** No package manifests (`package.json`, `pom.xml`), setup scripts, or Docker Compose files were found in the indexed snapshot of this repository. Concrete setup and usage instructions will be added here once those materials are available.
 
 ## Key Features and Benefits
 
-| Feature | Description |
-|---|---|
-| **Service Discovery** | Centralized lookup for all OpenFrame platform components |
-| **Version Catalog** | Tracks releases and compatibility metadata for registered components |
-| **Open Source** | Community-driven, extensible registry under the Flamingo Stack |
-| **AI-Ready** | Designed for consumption by Mingo AI (technician assistant) and Fae (client assistant) |
-| **MSP-Native** | Built for Managed Service Provider workflows and tooling patterns |
-| **Integration Hub** | One place to register and reference third-party tool integrations |
+Key topics will include, as the codebase is analyzed further:
 
-## Who Is This For?
+- How Registry fits into the Flamingo / OpenFrame ecosystem of tools
+- The specific capability or service Registry provides to the platform
+- Integration points with other Flamingo Stack repositories
 
-- **MSP Developers** building integrations on top of the OpenFrame platform
-- **OpenFrame Operators** who manage service catalogs for their tenants
-- **Contributors** extending the Flamingo ecosystem with new services or integrations
-- **Platform Engineers** wiring together MSP tooling with AI automation
+Check back after the next pipeline run for complete content on features and benefits.
 
-## Platform Context
+## Target Audience
 
-The Registry is one component of the broader OpenFrame platform:
+This documentation is intended for:
 
-```mermaid
-graph TD
-    Registry["Flamingo Registry\n(Service Catalog)"]
-    OpenFrame["OpenFrame Platform\n(Unified MSP Interface)"]
-    MingoAI["Mingo AI\n(Technician Assistant)"]
-    Fae["Fae\n(Client Assistant)"]
-    MSPTools["MSP Tools\n(PSA, RMM, Ticketing, etc.)"]
-    Integrations["Registered Integrations\n& Components"]
-
-    Registry --> OpenFrame
-    OpenFrame --> MingoAI
-    OpenFrame --> Fae
-    OpenFrame --> MSPTools
-    Registry --> Integrations
-    Integrations --> OpenFrame
-```
+- Engineers working within the Flamingo Stack organization who need to understand how Registry relates to Flamingo and OpenFrame
+- Contributors evaluating or extending the Registry repository
+- Operators and integrators who need a starting point before diving into setup, security, testing, and contribution details
 
 ## Quick Overview
 
-The Registry serves as the **spine of the OpenFrame service mesh** — every component that participates in the platform is registered here, making it discoverable, versionable, and auditable.
+The diagram below reflects the current, verified state of Registry in the organization's repository graph. No published artifacts, upstream dependencies, or downstream consumers have been recorded yet.
 
 ```mermaid
-graph LR
-    Developer["Developer / MSP Operator"] --> Register["Register Component"]
-    Register --> Registry["Flamingo Registry"]
-    Registry --> Discovery["Service Discovery"]
-    Registry --> Catalog["Version Catalog"]
-    Discovery --> AI["AI Assistants\n(Mingo / Fae)"]
-    Discovery --> Platform["OpenFrame Platform"]
-    Catalog --> CI["CI/CD Pipelines"]
+flowchart LR
+    Registry["Registry (flamingo-stack/registry)"]
+    Flamingo["Flamingo Platform"]
+    OpenFrame["OpenFrame (openframe.ai)"]
+
+    Flamingo -.-> Registry
+    OpenFrame -.-> Registry
 ```
 
-## Community and Support
+> Coverage for this graph is `full`: every other managed repository has a fresh snapshot, so the absence of upstream/downstream edges above reflects the actual current state, not a gap in analysis.
 
-- **OpenMSP Slack Community**: [https://www.openmsp.ai/](https://www.openmsp.ai/) — join the conversation, ask questions, and collaborate
-- **Repository**: [https://github.com/flamingo-stack/registry](https://github.com/flamingo-stack/registry)
-- **Flamingo Platform**: [https://flamingo.run](https://flamingo.run)
-- **OpenFrame Platform**: [https://openframe.ai](https://openframe.ai)
+## Where to Go Next
 
-## Getting Started
+To continue exploring how this repository is developed, tested, secured, and contributed to, see:
 
-Ready to dive in? Continue with these guides:
+- [Development Overview](../development/README.md)
+- [Testing Guide](../development/testing/README.md)
+- [Security Guide](../development/security/README.md)
+- [Contributing Guidelines](../development/contributing/guidelines.md)
 
-- **[Prerequisites](prerequisites.md)** — Check what you need before getting started
-- **[Quick Start](quick-start.md)** — Get up and running in minutes
-- **[First Steps](first-steps.md)** — What to do right after setup
+For community support and discussion, the Flamingo Stack organization does not use GitHub Issues or GitHub Discussions. All community interaction happens on the OpenMSP Slack community, reachable via [openmsp.ai](https://www.openmsp.ai/).
