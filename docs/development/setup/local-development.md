@@ -1,210 +1,43 @@
-# Local Development Guide
+# Local Development
 
-This guide covers how to clone, set up, and work with the Flamingo Registry locally. Because the registry is a **structured data catalog** (not a compiled application), the local workflow is focused on editing, validating, and testing registry entry definitions.
+> This documentation is being built from codebase analysis.
 
-## Clone the Repository
+The `flamingo-stack/registry` repository does not currently expose a package manifest (no `package.json`), a build descriptor (no `pom.xml`), a CLI bootstrap script, shell setup scripts, or Docker Compose files that the documentation pipeline could inspect. The repository graph for this project also reports no indexed languages, published artifacts, or symbols yet.
 
-Clone the repository using HTTPS (for read access or first-time contributors):
+Because of this, the concrete local-development workflow (dependency installation, run command, hot reload, and debugger wiring) cannot be verified against real files at this time. Rather than invent commands, ports, or scripts that are not present in the repository, this page lists what a Local Development guide for `flamingo-stack/registry` will cover once that material is available, and gives the parts of the workflow that are safe to state today.
+
+## Clone and setup
+
+The repository can be cloned like any other Flamingo Stack project:
 
 ```bash
 git clone https://github.com/flamingo-stack/registry.git
 cd registry
 ```
 
-Or using SSH (recommended for contributors with commit access):
+Beyond the clone step, no setup commands (dependency installers, bootstrap scripts, or environment templates) were found in the material available to this pipeline run. Once a package manifest, build file, or setup script is added to the repository, this section will be updated with the exact install commands (for example `npm install`, `mvn install`, or an equivalent), taken directly from those files.
 
-```bash
-git clone git@github.com:flamingo-stack/registry.git
-cd registry
-```
+## Running locally
 
-## Explore the Repository Layout
+No run command, entry point, or Docker Compose service definition was found for this repository. This section will document:
 
-After cloning, inspect the directory structure:
+- The exact command used to start the service or application locally.
+- Any required environment variables or configuration files.
+- The default local port(s) and health-check endpoint, if applicable.
 
-```bash
-ls -la
-```
+## Hot reload / watch mode
 
-You should find the following top-level structure (actual contents may vary):
+No watch-mode or hot-reload tooling (such as a dev server script, file watcher configuration, or framework-specific reload flag) was found in the repository material. This section will document the watch command and what triggers a reload once that tooling is identified in the codebase.
 
-```text
-registry/
-├── catalog/               ← Registry entries (the core content)
-│   ├── services/          ← Platform service definitions
-│   ├── integrations/      ← Third-party MSP tool integrations
-│   └── components/        ← Reusable components and libraries
-├── schemas/               ← JSON Schema / YAML Schema validation rules
-├── docs/                  ← Documentation (this directory)
-└── .editorconfig          ← Formatting rules
-```
+## Debug configuration
 
-## Working with Registry Entries
+No debugger configuration (for example an IDE launch configuration, remote-debug flags, or an inspector port) was found in the repository material. This section will document how to attach a debugger to the running process once that configuration exists in the repository.
 
-### Create a New Entry
+## Key topics to be filled in on the next pipeline run
 
-Registry entries are YAML or JSON files in the `catalog/` directory. To create a new entry:
+- Clone and dependency-installation commands sourced from the repository's actual manifest/build file.
+- The verified local run command and required configuration.
+- Hot reload / watch mode command and behavior, if the stack supports it.
+- Debugger attachment steps (ports, launch configuration, or IDE setup).
 
-```bash
-# Navigate to the relevant catalog section
-cd catalog/integrations/
-
-# Copy an existing entry as a starting point
-cp example-integration.yaml my-new-integration.yaml
-
-# Open in your editor
-code my-new-integration.yaml
-```
-
-A registry entry follows this pattern:
-
-```yaml
-apiVersion: registry.flamingo.run/v1
-kind: Integration
-metadata:
-  name: my-new-integration
-  version: "1.0.0"
-  description: "Brief description of this integration"
-  labels:
-    category: psa        # e.g., psa, rmm, monitoring, security
-    vendor: acme-corp
-spec:
-  homepage: https://acmecorp.example.com
-  documentation: https://docs.acmecorp.example.com
-  maintainers:
-    - name: Your Name
-      contact: https://www.openmsp.ai/
-```
-
-### Edit an Existing Entry
-
-```bash
-# Open an existing entry
-code catalog/services/existing-service.yaml
-
-# Make your changes, then validate (see below)
-```
-
-## Validating Registry Entries
-
-Before committing your changes, validate that your entries are well-formed.
-
-### YAML Syntax Check
-
-```bash
-# Validate a single file
-yamllint catalog/integrations/my-new-integration.yaml
-
-# Validate all files in a directory
-yamllint catalog/
-```
-
-A passing check produces no output. Errors look like:
-
-```text
-catalog/integrations/my-new-integration.yaml
-  12:3      error    wrong indentation: expected 4 but found 2  (indentation)
-```
-
-### JSON Schema Validation (If Available)
-
-If the repository includes schema validation tooling:
-
-```bash
-# Check if a validation script exists
-ls Makefile justfile scripts/
-
-# Run validation (example — check the actual repo for the real command)
-make validate
-# or
-./scripts/validate.sh
-```
-
-> **Tip:** Check the repository root for a `Makefile`, `justfile`, or `scripts/` directory that may contain validation helpers.
-
-## Checking for Duplicates
-
-Before adding a new entry, verify no existing entry has the same `name`:
-
-```bash
-# Search for a name across all catalog entries
-grep -r "name: my-new-integration" catalog/
-```
-
-If nothing is returned, your entry name is unique.
-
-## Local Branch Workflow
-
-Work on a dedicated feature branch — never commit directly to `main`:
-
-```bash
-# Create a feature branch
-git checkout -b feat/add-my-new-integration
-
-# Make your changes
-# ... edit files ...
-
-# Stage your changes
-git add catalog/integrations/my-new-integration.yaml
-
-# Commit with a clear message
-git commit -m "feat(registry): add my-new-integration entry"
-
-# Push to your fork or branch
-git push origin feat/add-my-new-integration
-```
-
-## Keeping Your Branch Up to Date
-
-When working on a long-running branch, keep it in sync with `main`:
-
-```bash
-# Fetch latest changes
-git fetch origin
-
-# Rebase your branch on top of main
-git rebase origin/main
-
-# Resolve any conflicts, then continue
-git rebase --continue
-```
-
-## Debug Configuration (Editor)
-
-Since the registry is data-driven, "debugging" typically means inspecting file content. Use these shell tools for quick inspection:
-
-### Query a YAML file with yq
-
-```bash
-# Install yq (a YAML processor)
-brew install yq        # macOS
-sudo apt install yq    # Linux
-
-# Query a field from a registry entry
-yq '.metadata.name' catalog/services/my-service.yaml
-yq '.spec.endpoint' catalog/services/my-service.yaml
-```
-
-### Validate JSON schema files with jq
-
-```bash
-# Pretty-print a schema file
-jq '.' schemas/service.schema.json
-
-# Check a specific field
-jq '.properties.metadata.required' schemas/service.schema.json
-```
-
-## Common Local Development Tasks
-
-| Task | Command |
-|---|---|
-| Validate all YAML files | `yamllint catalog/` |
-| Search for an entry by name | `grep -r "name: <value>" catalog/` |
-| List all registered services | `ls catalog/services/` |
-| Count total registry entries | `find catalog/ -name "*.yaml" \| wc -l` |
-| Check for duplicate names | `grep -rh "^  name:" catalog/ \| sort \| uniq -d` |
-
----
-
-> Once you've made and validated your changes locally, follow the [Contributing Guidelines](../contributing/guidelines.md) to open a Pull Request.
+For general onboarding steps that are already verified, see the project introduction and prerequisites pages. Check back after the next pipeline run, once source and configuration files for this repository are indexed, for complete, verified content.

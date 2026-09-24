@@ -1,229 +1,86 @@
-# Testing Overview
+# Testing
 
-This document describes how to validate and test registry entries in the **Flamingo Registry**. Because the registry is a structured data catalog (not a compiled application), "testing" primarily means **schema validation, linting, and integrity checks**.
+> Registry combines a Rust/Tauri desktop shell with a Go-based backend and an embedded web frontend (`www/`). The active code-review rules for this repository describe the concrete build/test targets referenced below (`OPENFRAM-009-5`, `OPENFRAM-010-8`); no test source files, Go packages, or Rust modules were available to this document's material, so the sections below stay strictly within what those rules and the repository's CI workflows confirm.
 
-## What We Test
+## What this document covers
 
-The Flamingo Registry uses a multi-layer validation approach:
+- How tests are organized in this repository given its Makefile-driven, multi-toolchain build
+- How to run tests locally through the `make` targets the active rules require
+- How to write new tests without breaking the frontend-embedding constraint the Tauri build imposes
+- What coverage expectations apply, and how the automated code reviewer checks for missing tests
 
-```mermaid
-graph TD
-    Commit["New Registry Entry\n(YAML / JSON file)"]
-    Syntax["Layer 1\nYAML Syntax Check\n(yamllint)"]
-    Schema["Layer 2\nSchema Validation\n(JSON Schema / YAML Schema)"]
-    Integrity["Layer 3\nIntegrity Checks\n(Duplicate names, URL format)"]
-    CI["Layer 4\nCI Pipeline\n(Automated on every PR)"]
-    Approved["Entry Approved\nfor Merge"]
+> The repository graph currently reports no indexed source files, test files, or symbols for this repository (coverage: full — meaning the absence is real, not a gap in indexing). This document is therefore scoped to the verifiable facts in the active code rules and CI workflow files rather than to specific test file paths, which are not yet visible in the graph.
 
-    Commit --> Syntax
-    Syntax --> Schema
-    Schema --> Integrity
-    Integrity --> CI
-    CI --> Approved
-```
+## Test structure and organization
 
-| Test Layer | Tool | What It Checks |
-|---|---|---|
-| **YAML Syntax** | `yamllint` | Valid YAML syntax, indentation, trailing spaces |
-| **Schema Validation** | JSON Schema validator | Required fields, correct types, valid enum values |
-| **Integrity Checks** | Shell scripts / grep | No duplicate entry names, valid URL formats |
-| **CI Pipeline** | GitHub Actions (or similar) | All of the above, run automatically on PRs |
+Registry's build has three layers that interact in a specific order, and this order is what shapes where tests can live and how they must be invoked:
 
----
+1. **Web frontend (`www/`)** — a static export that the Tauri build embeds at Rust compile time via the `generate_context!` macro. The directory must physically exist before any Rust compilation step runs.
+2. **Rust/Tauri shell** — compiled against whatever is currently staged in `www/`.
+3. **Go backend** — built as a static binary (see Coverage requirements below for its build flags).
 
-## Running Tests Locally
+Because `generate_context!` embeds `www/` at compile time, every `make` target that triggers a Rust build — including `make lint` and `make test` — needs *something* in `www/index.html` before it can proceed, even when the target has nothing to do with the frontend. The Makefile resolves this with two distinct targets:
 
-Always validate your entries locally before pushing a PR. This catches errors early and speeds up the review process.
-
-### Layer 1: YAML Syntax Validation
-
-```bash
-# Validate a single file
-yamllint catalog/services/my-service.yaml
-
-# Validate all catalog entries
-yamllint catalog/
-
-# Validate with verbose output
-yamllint -v catalog/
-```
-
-**Passing output (no issues):** The command exits silently with code 0.
-
-**Failing output example:**
-
-```text
-catalog/services/my-service.yaml
-  5:3     error    wrong indentation: expected 4 but found 2  (indentation)
-  12:1    warning  missing document start "---"  (document-start)
-```
-
-Fix any reported errors before proceeding.
-
-### Layer 2: Schema Validation
-
-If the repository includes a schema validation script:
-
-```bash
-# Check for available validation tooling
-ls Makefile justfile scripts/ 2>/dev/null
-
-# Run schema validation (adjust to the actual command in the repo)
-make validate
-# or
-./scripts/validate.sh
-```
-
-If no automated script is available, you can use `ajv-cli` (a JSON Schema validator) manually:
-
-```bash
-# Install ajv-cli
-npm install -g ajv-cli
-
-# Validate a YAML file against a schema (convert to JSON first)
-yq -o=json catalog/services/my-service.yaml > /tmp/my-service.json
-ajv validate -s schemas/service.schema.json -d /tmp/my-service.json
-```
-
-### Layer 3: Integrity Checks
-
-#### Check for Duplicate Entry Names
-
-```bash
-# Extract all entry names and find duplicates
-grep -rh "^  name:" catalog/ | sort | uniq -d
-```
-
-If this command produces output, there are duplicate names — resolve them before committing.
-
-#### Validate URL Format
-
-```bash
-# Find all URLs in catalog entries
-grep -rh "https\?://" catalog/ | grep -oP "https?://[^\s'\"]+" | sort -u
-```
-
-Review the list to ensure all URLs are:
-- Using HTTPS (not HTTP) where possible
-- Pointing to publicly accessible endpoints
-- Not containing embedded credentials or tokens
-
----
-
-## Writing New Tests
-
-As the registry grows, new validation rules may be added. When contributing a new check:
-
-### Adding a Schema Constraint
-
-Edit the relevant schema file in `schemas/`. For example, to require a new field `spec.homepage`:
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "required": ["apiVersion", "kind", "metadata", "spec"],
-  "properties": {
-    "spec": {
-      "type": "object",
-      "required": ["homepage"],
-      "properties": {
-        "homepage": {
-          "type": "string",
-          "format": "uri"
-        }
-      }
-    }
-  }
-}
-```
-
-After adding a schema constraint, update all existing entries in `catalog/` to comply with the new requirement.
-
-### Adding a Shell-Based Integrity Check
-
-If you're adding a new integrity check (e.g., enforcing a naming convention):
-
-```bash
-#!/usr/bin/env bash
-# scripts/check-naming.sh
-# Ensures all entry names use kebab-case
-
-VIOLATIONS=$(grep -rh "^  name:" catalog/ | grep -vP "^  name: [a-z][a-z0-9-]+$")
-
-if [ -n "$VIOLATIONS" ]; then
-  echo "ERROR: The following entries have invalid names (must be kebab-case):"
-  echo "$VIOLATIONS"
-  exit 1
-fi
-
-echo "All entry names are valid."
-```
-
-Make the script executable:
-
-```bash
-chmod +x scripts/check-naming.sh
-```
-
-Add it to your CI pipeline configuration.
-
----
-
-## CI Pipeline
-
-The Flamingo Registry uses a CI pipeline (e.g., GitHub Actions) to run all validation checks automatically on every pull request.
-
-### What the CI Pipeline Does
+- `web` — runs `scripts/build-web.sh` to stage the **real** frontend export. This is the only target permitted ahead of `make build`.
+- `web-placeholder` — writes a minimal stub into `www/` **only when `www/index.html` is absent** (using an `--if-missing` guard), so repeated runs don't clobber a real build. This is the only target permitted ahead of `make lint` and `make test`.
 
 ```mermaid
-sequenceDiagram
-    participant PR as Pull Request
-    participant CI as CI Pipeline
-    participant Lint as YAML Lint
-    participant Schema as Schema Validator
-    participant Integrity as Integrity Checks
-    participant Review as Maintainer Review
+flowchart TD
+    A["make build"] --> B["web (scripts/build-web.sh)"]
+    B --> C["Real www/ export"]
+    C --> D["cargo build (Tauri, generate_context!)"]
 
-    PR->>CI: PR opened or updated
-    CI->>Lint: Run yamllint
-    Lint-->>CI: Pass or fail
-    CI->>Schema: Run schema validation
-    Schema-->>CI: Pass or fail
-    CI->>Integrity: Run integrity checks
-    Integrity-->>CI: Pass or fail
-    CI-->>PR: Report status (green / red)
-    PR->>Review: Maintainer reviews if CI passes
+    E["make test"] --> F["web-placeholder"]
+    F --> G{"www/index.html present?"}
+    G -->|No| H["Write minimal stub"]
+    G -->|Yes| I["Leave existing www/ untouched"]
+    H --> J["cargo/go test"]
+    I --> J
 ```
 
-### CI Status
+> **Rule OPENFRAM-009-5 (error severity):** `make build` must always depend on `web`, never on the placeholder. `make lint` and `make test` must always depend on `web-placeholder`, never on a real bundle build. Scripts must not call `npm run build:web` or `npm run web:placeholder` directly from any CI step that also runs `cargo build` — the Makefile targets are the single entry point. If you add a CI step or script that invokes cargo, go, or npm test/build commands directly, route it through the Makefile targets instead of duplicating the logic inline.
 
-- **Green (passing)**: All validation layers passed — the PR is ready for maintainer review
-- **Red (failing)**: One or more checks failed — the contributor must fix the issues before review
+This means test organization in this repository is **not** simply "tests live next to source" — it is gated by which Makefile target stages `www/` first. Any new test suite (Go, Rust, or otherwise) that triggers a Tauri compile must run behind `web-placeholder`, not `web`, unless it is explicitly part of a release/build verification path.
 
----
+## Running tests
 
-## Coverage Requirements
+Run tests through the Makefile targets that the active rules pin down:
 
-| Check | Requirement |
-|---|---|
-| YAML syntax validation | All files in `catalog/` must pass |
-| Schema validation | All entries must conform to their `kind` schema |
-| No duplicate names | Zero duplicates across the entire catalog |
-| URL format | All `spec.homepage` and `spec.documentation` fields must be valid URIs |
+```bash
+# Stage the placeholder www/ export (only writes a stub if www/index.html is missing),
+# then run the test suite behind it.
+make test
+```
 
----
+A race-detector variant is called out explicitly in the active rules as the one sanctioned exception to the repository's default static-build flags:
 
-## Troubleshooting Common Validation Failures
+```bash
+# Race-detector build — the only target allowed to set CGO_ENABLED=1
+make test-race
+```
 
-| Error | Likely Cause | Fix |
-|---|---|---|
-| `wrong indentation` | Tabs instead of spaces, or wrong indent size | Use 2-space indentation throughout |
-| `missing document start "---"` | YAML file doesn't start with `---` | Add `---` as the first line |
-| `required field missing` | Schema requires a field not present in the entry | Add the missing field |
-| `format: uri` violation | A URL field has an invalid format | Ensure the URL starts with `https://` |
-| `Duplicate name found` | Two entries share the same `metadata.name` | Rename one of the conflicting entries |
+Do not invoke `npm run build:web`, `npm run web:placeholder`, `cargo build`, or `go test` directly in a CI step that also builds the Tauri shell — the Makefile targets (`web`, `web-placeholder`, `test`, `test-race`) are the single sanctioned entry point per `OPENFRAM-009-5`. Calling the underlying tools directly bypasses the guard that decides whether `www/` gets a real export or a placeholder, and can break the `generate_context!` embed step.
 
----
+## Writing new tests
 
-> For the contribution workflow after tests pass, see [Contributing Guidelines](../contributing/guidelines.md).
+When adding or changing an exported definition (a function, type, or public API surface), the active deterministic rule `TEST-001` applies:
+
+> **TEST-001 — "A new or changed exported definition should be referenced by a test"** (info severity, deterministic tier). A new or changed exported definition that no test file in the repository references ships unverified. Add or extend a test that exercises it, or state why it is not testable. This is checked by the `missing-test` analyzer over the checkout's test files using per-language test path globs; when the analyzer cannot run, it is judged from the diff.
+
+Practical guidance that follows from this rule and from the build-ordering constraint above:
+
+- **New Go or Rust code that is exported/public** should have an accompanying test that references it directly, so the deterministic `missing-test` analyzer can find the linkage. If a definition genuinely cannot be tested (e.g., a thin CLI entry point), state why in the pull request description rather than leaving it silently uncovered.
+- **Tests that trigger a Rust compile** (anything exercised through `cargo test` or through the Tauri shell) must run after `web-placeholder`, never after a full `web` build, so that test runs stay fast and don't require a real frontend export.
+- **Production build flags do not apply to test builds.** Per `OPENFRAM-010-8` (warn severity), production Go builds set `CGO_ENABLED=0` and `-trimpath` for fully static, reproducible binaries — but `test-race` is the explicitly sanctioned exception, and sets `CGO_ENABLED=1` because the race detector requires cgo. Do not carry `CGO_ENABLED=0` into a race-detector test target, and do not add `-trimpath` requirements to test-only builds.
+- **Don't duplicate build/test logic in CI scripts.** If a new test path needs frontend assets staged, call the existing `web` or `web-placeholder` Makefile targets rather than re-implementing the npm invocation inline in a workflow step.
+
+## Coverage requirements
+
+There is no numeric coverage threshold recorded in this repository's active rule set. Coverage is enforced through two mechanisms instead:
+
+1. **`TEST-001` (deterministic, info severity)** — every new or changed exported definition must be referenced by at least one test, checked automatically by the `missing-test` analyzer against the repository's test files. This is a per-change gate, not an aggregate percentage.
+2. **Build-flag correctness for the paths tests exercise** — `OPENFRAM-010-8` (warn severity) requires production builds to use `CGO_ENABLED=0 -trimpath`, with `test-race` as the sole documented exception (`CGO_ENABLED=1`, for the race detector). A test target that silently drifts from these flags — for example, a new race-detection target that forgets to set `CGO_ENABLED=1`, or a non-test target that turns cgo back on — is a rule violation the automated reviewer will flag.
+
+Because the code graph for this repository currently reports no indexed test files or symbols (coverage: full, meaning this is a confirmed empty state rather than a blind spot), no file-level or package-level coverage figures can be quoted here. Treat `TEST-001` compliance — every exported change backed by a referencing test — as the operative coverage bar until concrete test suites are indexed.
+
+For related build and CI context, see the [Development overview](../README.md), the [environment setup guide](../setup/environment.md), and the [local development guide](../setup/local-development.md). Contribution requirements around this testing gate are covered in the [contributing guidelines](../contributing/guidelines.md).
