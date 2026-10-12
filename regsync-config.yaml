@@ -448,7 +448,7 @@ sync:
         - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   - source: oci.external-secrets.io/external-secrets/external-secrets
-    target: ${TARGET_REGISTRY}/oci-external-secrets/external-secrets
+    target: ${TARGET_REGISTRY}/external-secrets/external-secrets
     type: repository
     tags:
       semverRange:
@@ -964,3 +964,4 @@ sync:
         - ">=2.23.6"
       allow:
         - '[0-9]+\.[0-9]+\.[0-9]+'
+
