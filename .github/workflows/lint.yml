@@ -1,0 +1,33 @@
+name: Lint
+
+permissions: {}
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: "Lint"
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Assign PR author
+        if: github.event.action == 'opened' && github.event.pull_request.user.type == 'User'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr edit ${{ github.event.pull_request.html_url }} --add-assignee ${{ github.event.pull_request.user.login }}
+      # Squash commits take the PR title; read live so a re-run picks up an edited title.
+      - name: Check PR title
+        if: github.event.pull_request.user.type == 'User'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.html_url }}
+        run: |
+          gh pr view "$PR" --json title -q .title | grep -qE "^(feat|fix|perf|refactor|docs|test|build|ci|chore|style|revert)(\(.+\))?!?: .+$" \
+            || { echo "::error::Expected 'type(scope): summary', e.g. 'fix(armor): exclude billing action'; fix the title and re-run"; exit 1; }
